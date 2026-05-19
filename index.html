@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">F3 Region — City, ST</title>
+<meta name="description" id="page-desc" content="F3 Region — Free, outdoor, peer-led workouts for men. Fitness. Fellowship. Faith.">
+<meta name="theme-color" content="#c8102e">
+<meta name="robots" content="index,follow">
+<link rel="canonical" id="canonical-link" href="">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" id="og-site" content="F3 Region">
+<meta property="og:title" id="og-title" content="F3 Region">
+<meta property="og:description" id="og-desc" content="Free, peer-led outdoor workouts for men.">
+<meta property="og:url" id="og-url" content="">
+<meta property="og:image" id="og-image" content="">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="tw-title" content="F3 Region">
+<meta name="twitter:description" id="tw-desc" content="Free, peer-led outdoor workouts for men.">
+<!-- Structured data populated at runtime from CONFIG -->
+<script type="application/ld+json" id="ld-json">{}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   F3 SNACKTOWN — Single-Page Site
+   Modeled after f3waxhaw.com
+   ═══════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --red:     #c8102e;
+  --red-dk:  #a50d24;
+  --orange:  #e8431a;
+  --amber:   #f0a020;
+  --dark:    #0d0d0d;
+  --dark2:   #111;
+  --dark3:   #181818;
+  --dark4:   #1e1e1e;
+  --border:  #2a2a2a;
+  --border2: #333;
+  --white:   #f0f0f0;
+  --body:    #c8c8c8;
+  --muted:   #777;
+  --gold:    #c8940a;
+  --nav-h:   64px;
+}
+
+body {
+  background: var(--dark);
+  color: var(--white);
+  font-family: 'Barlow', system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img { max-width: 100%; display: block; }
+
+/* ── Utility ── */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(13,13,13,.94); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  transition: background .3s;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+  letter-spacing: .06em; color: var(--white);
+  display: flex; align-items: center; gap: 10px; line-height: 1;
+}
+.nav-logo-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  background: var(--red); color: #fff;
+  font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0;
+  clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%);
+  flex-shrink: 0;
+}
+.nav-logo span { color: var(--red); margin-left: 2px; }
+.nav-tagline {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin-left: 8px;
+}
+
+/* Primary nav links */
+.nav-primary { display: flex; gap: 28px; list-style: none; }
+.nav-primary a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+  font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); transition: color .15s; position: relative;
+}
+.nav-primary a:hover, .nav-primary a.active { color: var(--white); }
+.nav-primary a.active::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 2px; background: var(--red);
+}
+
+/* Sub nav */
+.nav-sub {
+  position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 999;
+  background: rgba(17,17,17,.96); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 36px;
+  display: flex; align-items: center; gap: 24px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.nav-sub.visible { opacity: 1; pointer-events: auto; }
+.nav-sub a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); transition: color .15s;
+}
+.nav-sub a:hover, .nav-sub a.active { color: var(--white); }
+.nav-sub a.active { border-bottom: 1px solid var(--red); padding-bottom: 2px; }
+
+.nav-cta {
+  background: var(--red); color: #fff; border: none;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 9px 18px; transition: background .15s;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+.nav-cta:hover { background: var(--red-dk); }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none; background: none; border: none; color: var(--white);
+  font-size: 24px; cursor: pointer;
+}
+
+/* Mobile drawer */
+.mobile-drawer {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,.85); backdrop-filter: blur(20px);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 24px;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.mobile-drawer.open { opacity: 1; pointer-events: auto; }
+.mobile-drawer a {
+  font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+  letter-spacing: .06em; color: var(--white); transition: color .15s;
+}
+.mobile-drawer a:hover { color: var(--red); }
+.mobile-drawer .close-btn {
+  position: absolute; top: 20px; right: 24px;
+  background: none; border: none; color: var(--white); font-size: 32px; cursor: pointer;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  display: flex; align-items: center;
+  padding-top: var(--nav-h);
+  background: var(--dark);
+}
+.hero-photo {
+  position: absolute; inset: 0;
+  background: url('images/rb-fog.jpg') center 30% / cover no-repeat;
+  filter: saturate(.85) contrast(.95);
+  opacity: .55;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(13,13,13,.55) 0%, rgba(13,13,13,.25) 30%, rgba(13,13,13,.85) 95%),
+    linear-gradient(90deg, rgba(13,13,13,.85) 0%, rgba(13,13,13,.30) 55%, transparent 100%),
+    radial-gradient(ellipse 600px 400px at 8% 92%, rgba(200,16,46,.22) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 46%;
+  background: linear-gradient(170deg, transparent 0%, rgba(200,16,46,.04) 40%, rgba(200,16,46,.07) 55%, transparent 70%);
+  clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+  pointer-events: none;
+}
+/* Hero SVG silhouette */
+.hero-svg-silhouette {
+  position: absolute; right: 0; bottom: 0; width: 50%; max-width: 600px;
+  height: auto; z-index: 1; pointer-events: none;
+  opacity: .6;
+}
+
+/* (hero silhouette is now an inline SVG element) */
+.hero-content {
+  position: relative; z-index: 2; padding: 80px 80px 100px; max-width: 800px;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--red); max-width: 60px; }
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 9vw, 100px);
+  line-height: .88; letter-spacing: .02em; color: var(--white); margin-bottom: 12px;
+}
+.hero-title .accent {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--red);
+  text-stroke: 2px var(--red);
+}
+.hero-sub {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 20px;
+  font-weight: 300; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 28px;
+}
+.hero-desc {
+  font-size: 16px; line-height: 1.75; color: var(--body);
+  max-width: 520px; margin-bottom: 36px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--red); color: #fff; border: none;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 14px 32px; transition: background .15s;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  display: inline-block; text-align: center;
+}
+.btn-primary:hover { background: var(--red-dk); }
+.btn-ghost {
+  background: transparent; color: var(--white);
+  border: 1px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 14px 32px; transition: border-color .15s;
+  display: inline-block; text-align: center;
+}
+.btn-ghost:hover { border-color: var(--white); }
+
+/* Hero stats */
+.hero-stats {
+  position: absolute; right: 80px; bottom: 80px;
+  display: flex; gap: 48px; z-index: 2;
+}
+.hero-stat-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 48px;
+  color: var(--red); line-height: 1;
+}
+.hero-stat-lbl {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-top: 4px;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.scroll-indicator span {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 9px;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+}
+.scroll-indicator .arrow {
+  width: 14px; height: 14px; border-right: 1px solid var(--muted);
+  border-bottom: 1px solid var(--muted); transform: rotate(45deg);
+  animation: scrollBounce 2s infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: rotate(45deg) translateY(0); opacity: .4; }
+  50% { transform: rotate(45deg) translateY(4px); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TODAY STRIP / NEXT WORKOUT
+   ═══════════════════════════════════════════════════════════════ */
+.today-strip {
+  background: var(--dark2); border-top: 1px solid var(--border);
+  border-bottom: 3px solid var(--red);
+  padding: 16px 48px;
+  display: flex; align-items: center; gap: 32px; overflow-x: auto;
+}
+.today-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); white-space: nowrap; flex-shrink: 0;
+  display: flex; align-items: center; gap: 8px;
+}
+.today-label .pulse {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--red);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(200,16,46,.6); }
+  50% { opacity: .7; box-shadow: 0 0 0 6px rgba(200,16,46,0); }
+}
+.today-ao {
+  display: flex; align-items: center; gap: 14px;
+  flex-shrink: 0; padding: 0 20px;
+  border-left: 1px solid var(--border);
+}
+.today-ao-time {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--white); line-height: 1;
+}
+.today-ao-name {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  font-weight: 700; text-transform: uppercase; color: var(--white);
+}
+.today-ao-type {
+  font-size: 9px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 2px;
+  display: inline-block; margin-top: 2px;
+}
+.type-bc   { background: rgba(255,255,255,.06); color: #aaa; }
+.type-run  { background: rgba(39,174,96,.15); color: #27ae60; }
+.type-ruck { background: rgba(200,148,10,.15); color: var(--gold); }
+.today-live {
+  margin-left: auto; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px; color: var(--muted); white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+#today-strip-content {
+  display: contents;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATS BAR
+   ═══════════════════════════════════════════════════════════════ */
+.stats-bar {
+  background: var(--dark3); border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.stat-cell {
+  padding: 28px 32px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 42px;
+  color: var(--red); line-height: 1;
+}
+.stat-lbl {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION COMMONS
+   ═══════════════════════════════════════════════════════════════ */
+.section { padding: 72px 48px; }
+.section-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 52px;
+  letter-spacing: .04em; color: var(--white); line-height: 1;
+  margin-bottom: 14px;
+}
+.section-desc {
+  font-size: 16px; color: var(--body); max-width: 600px; line-height: 1.75;
+}
+/* Large watermark text behind sections */
+.section-watermark {
+  position: absolute; top: 40px; right: 48px;
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(80px, 12vw, 160px);
+  color: rgba(200,16,46,.04); line-height: 1; pointer-events: none;
+  letter-spacing: .06em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THREE F'S
+   ═══════════════════════════════════════════════════════════════ */
+.three-fs {
+  background: var(--dark); display: grid; grid-template-columns: 1fr 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+.f-block {
+  padding: 56px 48px; border-right: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.f-block:last-child { border-right: none; }
+.f-block::before {
+  content: attr(data-num); position: absolute; top: -20px; right: 16px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 140px;
+  color: rgba(200,16,46,.05); line-height: 1;
+}
+.f-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 14px;
+}
+.f-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 34px;
+  letter-spacing: .04em; color: var(--white); margin-bottom: 14px;
+}
+.f-desc { font-size: 15px; line-height: 1.75; color: var(--body); }
+
+/* ═══════════════════════════════════════════════════════════════
+   NEXT WORKOUT BANNER
+   ═══════════════════════════════════════════════════════════════ */
+.next-workout-banner {
+  background: var(--red); padding: 28px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.next-workout-text {
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+  color: #fff; letter-spacing: .04em;
+}
+.next-workout-text span {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+  font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  opacity: .8; display: block; margin-top: 2px;
+}
+.next-workout-btns { display: flex; gap: 12px; }
+.btn-white {
+  background: #fff; color: var(--dark); border: none;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 10px 22px;
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+}
+.btn-white:hover { background: #e0e0e0; }
+.btn-white-ghost {
+  background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 10px 22px;
+}
+.btn-white-ghost:hover { border-color: #fff; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SCHEDULE
+   ═══════════════════════════════════════════════════════════════ */
+.schedule-section {
+  background: var(--dark2); position: relative; overflow: hidden;
+}
+
+/* Day filter tabs */
+.schedule-tabs {
+  display: flex; gap: 2px; margin-top: 32px; margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.schedule-tab {
+  background: var(--dark4); border: none; color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 10px 18px; cursor: pointer; transition: all .15s;
+}
+.schedule-tab:hover { color: var(--white); }
+.schedule-tab.active { background: var(--red); color: #fff; }
+
+.schedule-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px; background: var(--border); margin-top: 4px;
+}
+.ao-card {
+  background: var(--dark); border: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  transition: border-color .15s, background .15s, transform .15s;
+  overflow: hidden;
+}
+.ao-card:hover { border-left-color: var(--red); background: var(--dark3); transform: translateY(-2px); }
+.ao-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; padding: 18px 22px 12px; border-bottom: 1px solid var(--border);
+}
+.ao-day {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); margin-top: 4px;
+}
+.ao-time {
+  font-family: 'Bebas Neue', sans-serif; font-size: 26px;
+  color: var(--white); line-height: 1; white-space: nowrap;
+}
+.ao-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+  letter-spacing: .04em; color: var(--white); line-height: 1.05;
+}
+.ao-body { padding: 14px 22px 18px; }
+.ao-loc, .ao-q {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  color: var(--body); margin-bottom: 6px; line-height: 1.5;
+}
+.ao-q strong { color: var(--white); font-weight: 700; }
+.ao-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-top: 12px; flex-wrap: wrap;
+}
+.btn-map {
+  display: inline-block; background: transparent; color: var(--red);
+  border: 1px solid var(--red);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  padding: 6px 14px; transition: background .15s, color .15s;
+}
+.btn-map:hover { background: var(--red); color: #fff; }
+.ao-meta {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  color: var(--body); margin-bottom: 10px;
+}
+.ao-meta a { color: var(--red); margin-left: 6px; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
+.ao-meta a:hover { text-decoration: underline; }
+.ao-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 2px; margin-right: 4px;
+}
+.badge-bc   { background: rgba(255,255,255,.06); color: #aaa; }
+.badge-run  { background: rgba(39,174,96,.15); color: #27ae60; }
+.badge-ruck { background: rgba(200,148,10,.15); color: var(--gold); }
+.badge-bike { background: rgba(41,128,185,.15); color: #4a9fd4; }
+.schedule-loading {
+  padding: 48px; text-align: center; color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  grid-column: 1 / -1;
+}
+.schedule-map-link {
+  margin-top: 20px; padding: 14px 0; text-align: center;
+  border-top: 1px solid var(--border);
+}
+.schedule-map-link a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--red); display: inline-flex; align-items: center; gap: 8px;
+}
+.schedule-map-link a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════════════════════
+   EVENTS
+   ═══════════════════════════════════════════════════════════════ */
+.events-section { background: var(--dark); position: relative; overflow: hidden; }
+
+.events-sub-tabs {
+  display: flex; gap: 2px; margin-top: 28px; margin-bottom: 24px;
+}
+.events-sub-tab {
+  background: var(--dark3); border: none; color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 8px 16px; cursor: pointer; transition: all .15s;
+}
+.events-sub-tab:hover { color: var(--white); }
+.events-sub-tab.active { background: var(--red); color: #fff; }
+
+.events-today-header {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--white); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 12px;
+}
+.events-today-header .date-badge {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .1em; background: var(--red);
+  color: #fff; padding: 3px 10px; text-transform: uppercase;
+}
+
+.events-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px; margin-bottom: 32px;
+}
+.event-card {
+  background: var(--dark3); border: 1px solid var(--border); padding: 20px;
+  transition: border-color .15s;
+}
+.event-card:hover { border-color: var(--red); }
+.event-card-time {
+  font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--red);
+}
+.event-card-name {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 16px;
+  font-weight: 700; text-transform: uppercase; color: var(--white); margin: 4px 0;
+}
+.event-card-loc {
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+}
+
+.upcoming-header {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--white); margin-bottom: 16px; margin-top: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.upcoming-list { display: flex; flex-direction: column; gap: 8px; }
+.upcoming-row {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--dark3); border: 1px solid var(--border);
+  padding: 14px 20px; transition: border-color .15s;
+}
+.upcoming-row:hover { border-color: var(--red); }
+.upcoming-date-block {
+  background: var(--red); color: #fff; padding: 8px 12px;
+  text-align: center; flex-shrink: 0; min-width: 52px;
+}
+.upcoming-date-block .day {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px; line-height: 1;
+}
+.upcoming-date-block .month {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+}
+.upcoming-info { flex: 1; }
+.upcoming-info .name {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+  font-weight: 700; text-transform: uppercase; color: var(--white);
+}
+.upcoming-info .details { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.upcoming-time {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  font-weight: 700; color: var(--muted); flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NEW TO F3
+   ═══════════════════════════════════════════════════════════════ */
+.new-section { background: var(--dark); position: relative; overflow: hidden; }
+
+.new-hero {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+}
+.new-hero-copy { padding: 72px 56px; }
+.new-hero-visual {
+  position: relative; overflow: hidden; min-height: 420px;
+  background:
+    linear-gradient(180deg, rgba(13,13,13,.20) 0%, rgba(13,13,13,.55) 60%, rgba(13,13,13,.92) 100%),
+    url('images/515564470_122104195208926768_1086239624356712610_n.jpg') center 30% / cover no-repeat;
+  display: flex; align-items: flex-end; padding: 40px;
+}
+.new-visual-inner {
+  position: relative; z-index: 1; text-align: left;
+}
+.new-visual-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 52px;
+  color: #fff; letter-spacing: .04em; line-height: 1;
+  text-shadow: 0 2px 16px rgba(0,0,0,.6);
+}
+.new-visual-sub {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(255,255,255,.9); margin-top: 10px;
+  text-shadow: 0 1px 8px rgba(0,0,0,.6);
+}
+
+/* What is F3 / FAQ */
+.new-content-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-top: 1px solid var(--border);
+}
+.new-content-left { padding: 56px; border-right: 1px solid var(--border); }
+.new-content-right { padding: 56px; }
+
+.new-quote {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--white); line-height: 1.2; margin-bottom: 12px;
+  border-left: 3px solid var(--red); padding-left: 16px;
+}
+.new-quote-attr {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 28px;
+}
+
+.f3-facts { margin-top: 24px; }
+.f3-fact {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 10px;
+}
+.f3-fact-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--red); flex-shrink: 0; width: 80px;
+}
+.f3-fact-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* FAQ accordion */
+.faq-list { margin-top: 24px; }
+.faq-heading {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 16px;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border); overflow: hidden;
+}
+.faq-question {
+  width: 100%; background: none; border: none; color: var(--white);
+  font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 500;
+  text-align: left; padding: 14px 0; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.faq-question:hover { color: var(--red); }
+.faq-question .arrow { transition: transform .2s; font-size: 12px; color: var(--muted); }
+.faq-item.open .faq-question .arrow { transform: rotate(180deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  font-size: 13px; color: var(--muted); line-height: 1.6;
+}
+.faq-item.open .faq-answer { max-height: 300px; }
+.faq-answer-inner { padding-bottom: 16px; }
+
+/* Video section */
+.video-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-top: 1px solid var(--border);
+}
+.video-cell {
+  padding: 48px 56px; border-right: 1px solid var(--border);
+}
+.video-cell:last-child { border-right: none; }
+.video-cell-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 8px;
+}
+.video-cell-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 26px;
+  color: var(--white); margin-bottom: 16px;
+}
+.video-embed {
+  position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+  background: #000; border: 1px solid var(--border);
+}
+.video-embed iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}
+.video-placeholder {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; background: var(--dark3); cursor: pointer;
+}
+.video-placeholder .play-btn {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--red); display: flex; align-items: center; justify-content: center;
+  transition: transform .15s;
+}
+.video-placeholder:hover .play-btn { transform: scale(1.1); }
+.video-placeholder .play-btn::after {
+  content: ''; width: 0; height: 0;
+  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+  border-left: 16px solid #fff; margin-left: 3px;
+}
+
+/* Steps */
+.steps { margin-top: 36px; display: flex; flex-direction: column; gap: 22px; }
+.step { display: flex; gap: 18px; align-items: flex-start; }
+.step-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 32px;
+  color: var(--red); line-height: 1; flex-shrink: 0; width: 28px;
+}
+.step-title {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--white); margin-bottom: 3px;
+}
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════════════════════
+   MEDIA SECTION
+   ═══════════════════════════════════════════════════════════════ */
+.media-section { background: var(--dark3); position: relative; overflow: hidden; }
+.media-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  margin-top: 36px; border: 1px solid var(--border);
+}
+.media-video-cell {
+  padding: 32px; border-right: 1px solid var(--border);
+}
+.media-video-cell:last-child { border-right: none; }
+.media-featured-label {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 6px;
+}
+.media-featured-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  color: var(--white); margin-bottom: 4px;
+}
+.media-featured-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px;
+}
+
+.media-cta {
+  margin-top: 32px; display: flex; gap: 12px; align-items: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAX — Vault, Leaderboard, Stats, Admin
+   ═══════════════════════════════════════════════════════════════ */
+.pax-section { background: var(--dark2); position: relative; overflow: hidden; }
+
+/* Sub-tabs */
+.pax-tabs {
+  display: flex; gap: 0; margin-top: 24px; border-bottom: 2px solid var(--border);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.pax-tab {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-family: "Barlow Condensed", sans-serif; font-size: 14px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; padding: 10px 20px;
+  border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap;
+  transition: color .2s, border-color .2s;
+}
+.pax-tab:hover { color: var(--white); }
+.pax-tab.active { color: var(--red); border-bottom-color: var(--red); }
+
+/* Panels */
+.pax-panel { display: none; margin-top: 24px; }
+.pax-panel.active { display: block; }
+
+/* Filter bar */
+.pax-filter-bar {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 20px;
+}
+.pax-filter-btn {
+  background: var(--dark3); border: 1px solid var(--border); color: var(--muted);
+  font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 600;
+  padding: 6px 14px; cursor: pointer; text-transform: uppercase;
+  letter-spacing: .06em; transition: all .15s;
+}
+.pax-filter-btn:hover, .pax-filter-btn.active {
+  color: var(--white); border-color: var(--red); background: rgba(200,16,46,.12);
+}
+.pax-search {
+  background: var(--dark3); border: 1px solid var(--border); color: var(--white);
+  font-family: "Barlow Condensed", sans-serif; font-size: 14px;
+  padding: 6px 12px; flex: 1; min-width: 120px; max-width: 220px;
+}
+.pax-search::placeholder { color: var(--muted); }
+
+/* Card grid */
+.pax-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+.pax-card {
+  background: var(--dark3); border: 1px solid var(--border); position: relative;
+  perspective: 600px; cursor: pointer; min-height: 240px;
+}
+.pax-card-inner {
+  position: relative; width: 100%; height: 100%; transition: transform .5s;
+  transform-style: preserve-3d;
+}
+.pax-card.flipped .pax-card-inner { transform: rotateY(180deg); }
+.pax-card-front, .pax-card-back {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 12px; text-align: center;
+}
+.pax-card-back {
+  transform: rotateY(180deg); background: var(--dark4);
+  justify-content: center; overflow-y: auto; font-size: 13px;
+  color: var(--muted); padding: 16px;
+}
+.pax-avatar {
+  width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+  border: 2px solid var(--border); margin-bottom: 10px; background: var(--dark);
+}
+.pax-avatar-placeholder {
+  width: 72px; height: 72px; border-radius: 50%; background: var(--dark4);
+  border: 2px solid var(--border); margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Bebas Neue", sans-serif; font-size: 28px; color: var(--muted);
+}
+.pax-handle {
+  font-family: "Bebas Neue", sans-serif; font-size: 20px; color: var(--white);
+  line-height: 1.1; margin-bottom: 4px;
+}
+.pax-home-ao {
+  font-family: "Barlow Condensed", sans-serif; font-size: 12px;
+  color: var(--muted); margin-bottom: 8px;
+}
+.pax-stat-row {
+  display: flex; gap: 16px; margin-top: 8px;
+  font-family: "Barlow Condensed", sans-serif; font-size: 12px; color: var(--muted);
+}
+.pax-stat-val {
+  font-family: "Bebas Neue", sans-serif; font-size: 18px; color: var(--amber);
+  line-height: 1;
+}
+.pax-position-badge {
+  font-family: "Barlow Condensed", sans-serif; font-size: 11px; font-weight: 700;
+  color: var(--red); text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: 4px;
+}
+.pax-back-bio {
+  font-family: "Barlow", sans-serif; font-size: 13px; color: var(--muted);
+  line-height: 1.5; margin-bottom: 8px;
+}
+.pax-back-stats {
+  font-family: "Barlow Condensed", sans-serif; font-size: 12px; color: #666;
+  margin-top: auto;
+}
+
+/* Leaderboard table */
+.lb-tabs {
+  display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid var(--border);
+}
+.lb-tab {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; padding: 8px 16px;
+  border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .2s;
+}
+.lb-tab:hover { color: var(--white); }
+.lb-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+.lb-table {
+  width: 100%; border-collapse: collapse;
+  font-family: "Barlow Condensed", sans-serif;
+}
+.lb-table th {
+  text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted); padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.lb-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 14px;
+  color: var(--white);
+}
+.lb-table tr:hover td { background: rgba(200,16,46,.05); }
+.lb-rank {
+  font-family: "Bebas Neue", sans-serif; font-size: 20px; color: var(--amber);
+  width: 40px; text-align: center;
+}
+.lb-rank-1 { color: #ffd700; }
+.lb-rank-2 { color: #c0c0c0; }
+.lb-rank-3 { color: #cd7f32; }
+.lb-avatar-sm {
+  width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--border); vertical-align: middle; margin-right: 8px;
+}
+.lb-handle { font-weight: 600; }
+.lb-count {
+  font-family: "Bebas Neue", sans-serif; font-size: 18px; color: var(--white);
+}
+
+/* Region stats */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+.stat-card {
+  background: var(--dark3); border: 1px solid var(--border); padding: 24px;
+  text-align: center;
+}
+.stat-card-value {
+  font-family: "Bebas Neue", sans-serif; font-size: 42px; color: var(--red);
+  line-height: 1;
+}
+.stat-card-label {
+  font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-top: 4px;
+}
+.day-chart {
+  display: flex; gap: 8px; align-items: flex-end; height: 120px;
+  margin-top: 24px;
+}
+.day-bar-wrap { flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.day-bar {
+  width: 100%; max-width: 40px; background: var(--red); min-height: 4px;
+  transition: height .3s;
+}
+.day-bar-label {
+  font-family: "Barlow Condensed", sans-serif; font-size: 11px; color: var(--muted);
+  margin-top: 6px; text-transform: uppercase;
+}
+.day-bar-value {
+  font-family: "Barlow Condensed", sans-serif; font-size: 11px; color: var(--white);
+  margin-bottom: 4px;
+}
+
+/* Admin panel */
+.admin-toggle {
+  position: fixed; bottom: 16px; right: 16px; z-index: 999;
+  background: var(--dark3); border: 1px solid var(--border); color: var(--muted);
+  font-family: "Barlow Condensed", sans-serif; font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .1em; padding: 8px 14px;
+  cursor: pointer; transition: all .2s;
+}
+.admin-toggle:hover { color: var(--white); border-color: var(--red); }
+.admin-toggle.authed { color: var(--red); border-color: var(--red); }
+.admin-bar {
+  display: none; background: var(--dark); border: 1px solid var(--red);
+  padding: 16px; margin-top: 16px;
+  font-family: "Barlow Condensed", sans-serif;
+}
+.admin-bar.visible { display: block; }
+.admin-bar input, .admin-bar textarea {
+  background: var(--dark3); border: 1px solid var(--border); color: var(--white);
+  font-family: "Barlow Condensed", sans-serif; font-size: 14px;
+  padding: 6px 10px; width: 100%; margin-bottom: 8px;
+}
+.admin-bar textarea { min-height: 60px; resize: vertical; }
+.admin-bar label {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted); display: block; margin-bottom: 2px;
+}
+.admin-btn {
+  background: var(--red); color: var(--white); border: none; cursor: pointer;
+  font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em; padding: 8px 16px;
+  transition: background .2s;
+}
+.admin-btn:hover { background: var(--red-dk); }
+.admin-btn-secondary {
+  background: var(--dark3); border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; font-family: "Barlow Condensed", sans-serif; font-size: 13px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  padding: 8px 16px; transition: all .2s;
+}
+.admin-btn-secondary:hover { color: var(--white); border-color: var(--red); }
+
+.pax-loading {
+  text-align: center; padding: 48px; color: var(--muted);
+  font-family: "Barlow Condensed", sans-serif; font-size: 16px;
+}
+.pax-empty {
+  grid-column: 1 / -1;
+  text-align: center; padding: 56px 32px; max-width: 560px; margin: 0 auto;
+  color: var(--body); font-size: 15px; line-height: 1.7;
+  border: 1px dashed var(--border2);
+}
+
+@media (max-width: 600px) {
+  .pax-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .pax-card { min-height: 210px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .lb-table td, .lb-table th { padding: 8px 6px; font-size: 13px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+.footer { background: #000; border-top: 3px solid var(--red); padding: 56px 48px 24px; }
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid #161616;
+}
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif; font-size: 30px;
+  color: var(--white); margin-bottom: 6px;
+}
+.footer-brand span { color: var(--red); }
+.footer-tagline {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+.footer-desc { font-size: 13px; color: #444; line-height: 1.7; }
+.footer-heading {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-links a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+  font-weight: 600; color: var(--muted); transition: color .15s;
+}
+.footer-links a:hover { color: var(--white); }
+.footer-social { display: flex; gap: 12px; margin-top: 20px; }
+.footer-social a {
+  width: 32px; height: 32px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--muted); transition: all .15s;
+}
+.footer-social a:hover { border-color: var(--red); color: var(--red); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  color: #333; letter-spacing: .04em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   JOIN MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.join-modal {
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,.78); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.join-modal.open { display: flex; }
+.join-modal-inner {
+  background: var(--dark2); border: 1px solid var(--border);
+  width: 100%; max-width: 480px; padding: 36px 32px 32px;
+  position: relative;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+.join-close {
+  position: absolute; top: 10px; right: 14px;
+  background: none; border: none; color: var(--muted);
+  font-size: 28px; cursor: pointer; line-height: 1;
+}
+.join-close:hover { color: var(--white); }
+.join-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 8px;
+}
+.join-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 36px;
+  color: var(--white); letter-spacing: .03em; line-height: 1; margin-bottom: 10px;
+}
+.join-sub { color: var(--body); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+.join-label {
+  display: block; margin-bottom: 12px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+  font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted);
+}
+.join-label input, .join-label textarea {
+  display: block; width: 100%; margin-top: 6px;
+  background: var(--dark); border: 1px solid var(--border2); color: var(--white);
+  padding: 10px 12px; font: 14px 'Barlow', sans-serif;
+}
+.join-label input:focus, .join-label textarea:focus { outline: none; border-color: var(--red); }
+.join-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.join-status { margin-top: 12px; font-size: 13px; color: var(--body); min-height: 1.2em; }
+.join-status.ok { color: #4ade80; }
+.join-status.err { color: var(--red); }
+.join-fallback { margin-top: 14px; font-size: 12px; color: var(--muted); }
+.join-fallback a { color: var(--red); }
+.join-fallback a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .nav { padding: 0 16px; }
+  .nav-primary { display: none; }
+  .nav-hamburger { display: block; }
+  .nav-tagline { display: none; }
+  .container { padding: 0 20px; }
+  .section { padding: 48px 20px; }
+
+  .hero-content { padding: 60px 24px 60px; }
+  .hero-stats { display: none; }
+  .hero-svg-silhouette { display: none; }
+  .hero-title { font-size: clamp(48px, 14vw, 80px); }
+
+  .today-strip { padding: 14px 20px; gap: 20px; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+
+  .three-fs { grid-template-columns: 1fr; }
+  .f-block { border-right: none; border-bottom: 1px solid var(--border); }
+
+  .ao-header { padding: 14px 16px 10px; gap: 10px; }
+  .ao-body { padding: 12px 16px 16px; }
+  .ao-name { font-size: 22px; }
+  .ao-time { font-size: 22px; }
+  .ao-footer { gap: 8px; }
+  .join-modal-inner { padding: 28px 22px 24px; }
+  .join-title { font-size: 30px; }
+  .section-title { font-size: 40px; }
+
+  .next-workout-banner { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+
+  .schedule-grid { grid-template-columns: 1fr; }
+
+  .events-grid { grid-template-columns: 1fr; }
+  .upcoming-row { flex-direction: column; align-items: flex-start; }
+
+  .new-hero { grid-template-columns: 1fr; }
+  .new-hero-visual { display: none; }
+  .new-hero-copy { padding: 48px 24px; }
+  .new-content-grid { grid-template-columns: 1fr; }
+  .new-content-left { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 24px; }
+  .new-content-right { padding: 40px 24px; }
+  .video-row { grid-template-columns: 1fr; }
+  .video-cell { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; }
+
+  .media-grid { grid-template-columns: 1fr; }
+  .media-video-cell { border-right: none; border-bottom: 1px solid var(--border); }
+
+  .footer { padding: 40px 20px 20px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="nav" id="main-nav">
+  <a href="#" class="nav-logo" onclick="showPage('home')"><span class="nav-logo-mark">F3</span><span data-cfg="region">REGION</span></a>
+  <span class="nav-tagline">Fitness. Fellowship. Faith.</span>
+  <ul class="nav-primary" id="nav-links">
+    <li><a href="#" class="active" data-page="home" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" data-page="events" onclick="showPage('events')">Events</a></li>
+    <li><a href="#" data-page="schedule" onclick="showPage('schedule')">Schedule</a></li>
+    <li><a href="#" data-page="new" onclick="showPage('new')">New to F3</a></li>
+    <li><a href="#" data-page="pax" onclick="showPage('pax')">PAX</a></li>
+  </ul>
+  <a href="#" class="nav-cta" onclick="openJoin();return false">Join Us &rarr;</a>
+  <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">&#9776;</button>
+</nav>
+
+<!-- Sub-nav (shows contextually) -->
+<div class="nav-sub" id="nav-sub"></div>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <button class="close-btn" onclick="toggleMobileMenu()">&times;</button>
+  <a href="#" onclick="showPage('home'); toggleMobileMenu()">Home</a>
+  <a href="#" onclick="showPage('events'); toggleMobileMenu()">Events</a>
+  <a href="#" onclick="showPage('schedule'); toggleMobileMenu()">Schedule</a>
+  <a href="#" onclick="showPage('new'); toggleMobileMenu()">New to F3</a>
+  <a href="#" onclick="showPage('pax'); toggleMobileMenu()">PAX</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE: HOME
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-photo"></div>
+    <div class="hero-bg"></div>
+    <!-- SVG silhouette group on right side -->
+    <svg class="hero-svg-silhouette" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="silGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8102e" stop-opacity=".15"/>
+          <stop offset="100%" stop-color="#c8102e" stop-opacity=".03"/>
+        </linearGradient>
+      </defs>
+      <g fill="url(#silGrad)">
+        <!-- Person doing a burpee -->
+        <ellipse cx="160" cy="280" rx="28" ry="32"/>
+        <rect x="130" y="312" width="60" height="25" rx="12"/>
+        <rect x="110" y="320" width="45" height="16" rx="8" transform="rotate(-30 132 328)"/>
+        <rect x="185" y="318" width="45" height="16" rx="8" transform="rotate(25 208 326)"/>
+        <rect x="125" y="335" width="20" height="70" rx="8" transform="rotate(5 135 370)"/>
+        <rect x="160" y="335" width="20" height="70" rx="8" transform="rotate(-8 170 370)"/>
+        <!-- Person doing overhead press -->
+        <ellipse cx="340" cy="220" rx="30" ry="35"/>
+        <rect x="320" y="255" width="40" height="90" rx="10"/>
+        <rect x="295" y="250" width="22" height="70" rx="7" transform="rotate(-60 306 285)"/>
+        <rect x="363" y="248" width="22" height="70" rx="7" transform="rotate(60 374 283)"/>
+        <rect x="270" y="200" width="120" height="10" rx="5"/>
+        <rect x="315" y="340" width="24" height="95" rx="8"/>
+        <rect x="339" y="340" width="24" height="95" rx="8"/>
+        <!-- Person running -->
+        <ellipse cx="490" cy="300" rx="24" ry="28"/>
+        <rect x="475" y="328" width="30" height="70" rx="8"/>
+        <rect x="460" y="335" width="18" height="55" rx="6" transform="rotate(-35 469 363)"/>
+        <rect x="505" y="330" width="18" height="50" rx="6" transform="rotate(20 514 355)"/>
+        <rect x="468" y="395" width="20" height="80" rx="7" transform="rotate(-15 478 435)"/>
+        <rect x="498" y="395" width="20" height="80" rx="7" transform="rotate(25 508 435)"/>
+      </g>
+    </svg>
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span data-cfg="cityEst">City, ST &middot; Est. 2019</span></div>
+      <h1 class="hero-title">SHOW UP<br><span class="accent">IN THE GLOOM</span></h1>
+      <div class="hero-sub">Fitness &middot; Fellowship &middot; Faith</div>
+      <p class="hero-desc">
+        <span data-cfg="heroDesc">Free, peer-led outdoor workouts for men. No experience required. No one left behind. Show up before dawn and leave better than you arrived.</span>
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-primary" onclick="showPage('new')">I&rsquo;m New &mdash; Start Here</a>
+        <a href="#" class="btn-ghost" onclick="showPage('schedule')">View Schedule</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num" data-cfg="aoCount">7</div>
+        <div class="hero-stat-lbl">Active AOs</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">0530</div>
+        <div class="hero-stat-lbl">We Start</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">$0</div>
+        <div class="hero-stat-lbl">Always Free</div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- TODAY STRIP -->
+  <div class="today-strip">
+    <div class="today-label"><span class="pulse"></span> Today&rsquo;s Workouts</div>
+    <div id="today-strip-content">
+      <div style="color:var(--muted); font-size:13px;">Loading&hellip;</div>
+    </div>
+    <div class="today-live">Live from F3 Nation API &rarr;</div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-cell">
+      <div class="stat-num" id="stat-pax" data-cfg="paxCount">50+</div>
+      <div class="stat-lbl">PAX in Region</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-cfg="aoCount">7</div>
+      <div class="stat-lbl">Active AOs</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-cfg="daysPerWeek">6</div>
+      <div class="stat-lbl">Days Per Week</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">$0</div>
+      <div class="stat-lbl">Cost to Join</div>
+    </div>
+  </div>
+
+  <!-- THREE F'S -->
+  <div class="three-fs">
+    <div class="f-block" data-num="1">
+      <div class="f-label">1st F</div>
+      <div class="f-title">Fitness</div>
+      <p class="f-desc">The magnet that draws men in. Free, peer-led workouts designed to challenge every fitness level &mdash; from FNGs to COTs. No one gets left behind, but no one gets left where they started.</p>
+    </div>
+    <div class="f-block" data-num="2">
+      <div class="f-label">2nd F</div>
+      <div class="f-title">Fellowship</div>
+      <p class="f-desc">The glue that keeps men coming back. Bonds forged in the pre-dawn gloom are strengthened through social gatherings, races, and endurance events. These are genuine friendships &mdash; not networking.</p>
+    </div>
+    <div class="f-block" data-num="3">
+      <div class="f-label">3rd F</div>
+      <div class="f-title">Faith</div>
+      <p class="f-desc">The dynamite. We&rsquo;re not a religious organization, but we believe we&rsquo;re not the center of the universe. Men are challenged to live for something bigger than themselves and lead in their communities.</p>
+    </div>
+  </div>
+
+  <!-- NEXT WORKOUT BANNER -->
+  <div class="next-workout-banner" id="next-workout-banner">
+    <div class="next-workout-text" id="next-workout-text">
+      YOUR NEXT WORKOUT STARTS AT 0530
+      <span id="next-workout-details">Loading next workout&hellip;</span>
+    </div>
+    <div class="next-workout-btns">
+      <a href="#" class="btn-white" onclick="showPage('schedule')">View Full Schedule</a>
+      <a href="#" class="btn-white-ghost" onclick="showPage('events')">Upcoming Events</a>
+    </div>
+  </div>
+
+  <!-- MEDIA TEASER (on home page) -->
+  <section class="section media-section">
+    <div style="position:relative">
+      <span class="section-watermark">MEDIA</span>
+      <div class="section-label">Watch &amp; Learn</div>
+      <div class="section-title">See What F3 Is About</div>
+      <p class="section-desc">Everything you need to know before showing up in the Gloom for the first time.</p>
+    </div>
+    <div class="media-grid">
+      <div class="media-video-cell">
+        <div class="media-featured-label">F3 Nation &middot; Official Explainer</div>
+        <div class="media-featured-title">What Is F3? &mdash; 100 Seconds</div>
+        <div class="video-embed">
+          <iframe src="https://player.vimeo.com/video/143444379?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="media-video-cell">
+        <div class="media-featured-label">Featured by <span data-cfg="region">Region</span></div>
+        <div class="media-featured-title">F3 <span data-cfg="region">Region</span> &mdash; Our Story</div>
+        <div class="media-featured-desc">Check out our region&rsquo;s hype video and see the real PAX, real workouts, real brotherhood.</div>
+        <div class="video-embed">
+          <div class="video-placeholder" id="hype-video-placeholder">
+            <div class="play-btn"></div>
+          </div>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:12px;">
+          <a data-link="facebook" href="#" target="_blank" style="font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);">&#x1f4f7; Facebook</a>
+          <a data-link="instagram" href="#" target="_blank" style="font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);">&#x1f4f8; Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="media-cta">
+      <a href="#" class="btn-primary" onclick="openJoin();return false">Join <span data-cfg="f3region">F3 Region</span> &rarr;</a>
+    </div>
+  </section>
+
+</div><!-- /page-home -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE: EVENTS
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="page-events" style="display:none; padding-top: var(--nav-h);">
+  <section class="section events-section" style="min-height:80vh;">
+    <div style="position:relative">
+      <span class="section-watermark">EVENTS</span>
+      <div class="section-label"><span data-cfg="city">City, ST</span></div>
+      <div class="section-title">All Events in <span data-cfg="region">Region</span></div>
+      <p class="section-desc">Convergences, races, service days, and community gatherings &mdash; not your regular workout morning.</p>
+    </div>
+
+    <div class="events-sub-tabs">
+      <button class="events-sub-tab active" onclick="filterEvents('today',this)">Today</button>
+      <button class="events-sub-tab" onclick="filterEvents('upcoming',this)">Upcoming</button>
+    </div>
+
+    <div id="events-today-container">
+      <div class="events-today-header">
+        Today in <span data-cfg="region">Region</span>
+        <span class="date-badge" id="events-today-date"></span>
+      </div>
+      <div class="events-grid" id="events-today-grid">
+        <div style="color:var(--muted); font-size:14px; padding:24px;">Loading events&hellip;</div>
+      </div>
+    </div>
+
+    <div id="events-upcoming-container">
+      <div class="upcoming-header">Upcoming Events in <span data-cfg="region">Region</span></div>
+      <div class="upcoming-list" id="events-upcoming-list">
+        <div style="color:var(--muted); font-size:14px; padding:24px;">Loading&hellip;</div>
+      </div>
+    </div>
+  </section>
+</div><!-- /page-events -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE: SCHEDULE
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="page-schedule" style="display:none; padding-top: var(--nav-h);">
+  <section class="section schedule-section" style="min-height:80vh;">
+    <div style="position:relative">
+      <span class="section-watermark">SCHEDULE</span>
+      <div class="section-label">Weekly Workout Schedule</div>
+      <div class="section-title">Find Your Workout</div>
+      <p class="section-desc">Free, peer-led workouts every morning in <span data-cfg="city">City, ST</span> and surrounding areas. Live data from the F3 Nation API &mdash; updated nightly.</p>
+      <div style="margin-top:12px;">
+        <a href="https://map.f3nation.com" target="_blank" style="font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--red); display:inline-flex; align-items:center; gap:6px;">
+          &#x1f4cd; Not in <span data-cfg="city">City</span>? Find the closest workout nationwide &rarr;
+        </a>
+      </div>
+    </div>
+
+    <div class="schedule-tabs" id="schedule-tabs">
+      <button class="schedule-tab active" onclick="filterSchedule('all',this)">All Workouts</button>
+      <button class="schedule-tab" onclick="filterSchedule('1',this)">Mon</button>
+      <button class="schedule-tab" onclick="filterSchedule('2',this)">Tue</button>
+      <button class="schedule-tab" onclick="filterSchedule('3',this)">Wed</button>
+      <button class="schedule-tab" onclick="filterSchedule('4',this)">Thu</button>
+      <button class="schedule-tab" onclick="filterSchedule('5',this)">Fri</button>
+      <button class="schedule-tab" onclick="filterSchedule('6',this)">Sat</button>
+      <button class="schedule-tab" onclick="filterSchedule('0',this)">Sun</button>
+    </div>
+    <div class="schedule-grid" id="schedule-grid">
+      <div class="schedule-loading">Loading schedule from F3 Nation&hellip;</div>
+    </div>
+  </section>
+</div><!-- /page-schedule -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE: NEW TO F3
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="page-new" style="display:none; padding-top: var(--nav-h);">
+
+  <!-- Hero row -->
+  <div class="new-hero">
+    <div class="new-hero-copy">
+      <div class="section-label">First Time?</div>
+      <div class="section-title">Welcome to the Gloom</div>
+      <p class="section-desc" style="margin-bottom:8px;">Everything you need to know before showing up in the Gloom for the first time &mdash; and why you&rsquo;ll be back.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Pick a Workout</div>
+            <p class="step-desc">Choose any AO from the schedule. Monday through Saturday &mdash; find one that fits your time.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Just Show Up</div>
+            <p class="step-desc">No registration. No fee. No fitness test. Arrive a few minutes early and introduce yourself as an FNG.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Get Your Name</div>
+            <p class="step-desc">First timers are called FNGs. Stick around long enough and the PAX will give you your F3 name.</p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="#" class="btn-primary" onclick="showPage('schedule')">Find a Workout &rarr;</a>
+        <a href="#" class="btn-ghost" onclick="showPage('schedule')">See the Schedule</a>
+      </div>
+    </div>
+    <div class="new-hero-visual">
+      <div class="new-visual-inner">
+        <div class="new-visual-title">JUST<br>SHOW<br>UP</div>
+        <div class="new-visual-sub">No experience required &middot; The PAX will take it from there</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video row -->
+  <div class="video-row">
+    <div class="video-cell">
+      <div class="video-cell-label">F3 Nation &middot; Official Explainer</div>
+      <div class="video-cell-title">What Is F3? &mdash; 100 Seconds</div>
+      <div class="video-embed">
+        <iframe src="https://player.vimeo.com/video/143444379?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <p style="font-size:14px; color:var(--body); margin-top:12px; line-height:1.7;">Free. Peer-led. Outdoors. Open to every man at every fitness level. This video from F3 Nation covers it all &mdash; in just 100 seconds.</p>
+    </div>
+    <div class="video-cell">
+      <div class="video-cell-label">The Mission</div>
+      <div class="video-cell-title">What Is F3?</div>
+      <p style="font-size:15px; color:var(--body); line-height:1.75; margin-bottom:20px;">
+        F3 &mdash; Fitness, Fellowship, Faith &mdash; is a national grassroots movement of free men&rsquo;s workouts.
+        It started as a handful of guys at a boot camp on Saturday mornings in Charlotte, NC, and has grown into a
+        nationwide movement of men committed to getting better together.
+      </p>
+      <div class="new-quote">"Leave no man behind, but leave no man where you found him."</div>
+      <div class="new-quote-attr">&mdash; F3 Nation Credo</div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="#" class="btn-primary" onclick="openJoin();return false">Join <span data-cfg="f3region">F3 Region</span> &rarr;</a>
+        <a href="#" class="btn-ghost" onclick="showPage('schedule')">See the Schedule</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- What is F3 + FAQ -->
+  <div class="new-content-grid">
+    <div class="new-content-left">
+      <div class="section-label">The Basics</div>
+      <div class="section-title" style="font-size:36px;">What is F3?</div>
+      <p style="font-size:15px; color:var(--body); line-height:1.75; margin-bottom:20px;">
+        <span data-cfg="aboutDesc">A growing region with workout locations across the area and a roster of PAX who show up rain or shine &mdash; all completely free.</span>
+      </p>
+      <p style="font-size:15px; color:var(--body); line-height:1.75; margin-bottom:24px;">
+        The workouts are intense but scalable. The community is the reason men stay.
+      </p>
+      <div class="f3-facts">
+        <div class="f3-fact">
+          <span class="f3-fact-label">Free</span>
+          <span class="f3-fact-text">No memberships. No fees.</span>
+        </div>
+        <div class="f3-fact">
+          <span class="f3-fact-label">Outdoor</span>
+          <span class="f3-fact-text">Rain, cold, heat. We post in the Gloom.</span>
+        </div>
+        <div class="f3-fact">
+          <span class="f3-fact-label">Peer-Led</span>
+          <span class="f3-fact-text">No coaches. Any PAX can Q (lead).</span>
+        </div>
+        <div class="f3-fact">
+          <span class="f3-fact-label">Open to All</span>
+          <span class="f3-fact-text">Any age, any fitness level. Seriously.</span>
+        </div>
+      </div>
+      <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="#" class="btn-primary" onclick="showPage('schedule')">Find a Workout</a>
+      </div>
+    </div>
+    <div class="new-content-right">
+      <div class="faq-list">
+        <div class="faq-heading">Common Questions</div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What should I wear / bring to my first workout?
+            <span class="arrow">&#x25BC;</span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Wear workout clothes and shoes appropriate for outdoor exercise. Bring water. Some workouts involve running, so trail/running shoes work best. Gloves and a headlamp help in cold/dark months. That&rsquo;s it.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            What do all the terms mean? (EH, PAX, Q, FNG)
+            <span class="arrow">&#x25BC;</span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><strong>PAX</strong> = participants. <strong>Q</strong> = the workout leader. <strong>FNG</strong> = Friendly New Guy (first timer). <strong>EH</strong> = Emotional Headlock (how you convince a buddy to come). <strong>AO</strong> = Area of Operations (workout location). <strong>HC</strong> = Hard Commit (you said you&rsquo;d be there, so you&rsquo;re there). <strong>COT</strong> = Circle of Trust (closing circle).</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            I&rsquo;m not in great shape. Will I be left behind?
+            <span class="arrow">&#x25BC;</span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">No. Every workout is scalable. The Q will offer modifications and the PAX will circle back for you. &ldquo;Leave no man behind&rdquo; isn&rsquo;t a slogan &mdash; it&rsquo;s the rule. Show up where you are.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Is F3 a religious organization?
+            <span class="arrow">&#x25BC;</span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">No. F3 is open to men of all faiths and none. The &ldquo;3rd F&rdquo; (Faith) means living for something bigger than yourself &mdash; however you define that. No preaching, no pressure.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How do I find out about my first workout?
+            <span class="arrow">&#x25BC;</span>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">Check the <a href="#" onclick="showPage('schedule')" style="color:var(--red)">schedule page</a>, pick an AO that works for you, and just show up. No registration needed. Arrive 5 minutes early and say &ldquo;I&rsquo;m an FNG.&rdquo; The PAX will take it from there.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-new -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE: PAX
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="page-pax" style="display:none; padding-top: var(--nav-h);">
+  <section class="section pax-section" style="min-height:80vh;">
+    <div style="position:relative">
+      <span class="section-watermark">PAX</span>
+      <div class="section-label">Meet the PAX</div>
+      <div class="section-title">PAX</div>
+      <p class="section-desc">The men of <span data-cfg="f3region">F3 Region</span> &mdash; directory, leaderboard and region stats, updated nightly from the F3 Nation API.</p>
+    </div>
+
+    <!-- Sub-tabs -->
+    <div class="pax-tabs">
+      <button class="pax-tab active" onclick="switchPaxTab('vault',this)">PAX Vault</button>
+      <button class="pax-tab" onclick="switchPaxTab('leaderboard',this)">Leaderboard</button>
+      <button class="pax-tab" onclick="switchPaxTab('stats',this)">Region Stats</button>
+    </div>
+
+    <!-- PAX Vault Panel -->
+    <div id="pax-vault" class="pax-panel active">
+      <div class="pax-filter-bar">
+        <button class="pax-filter-btn active" onclick="filterPax('all',this)">All</button>
+        <button class="pax-filter-btn" onclick="filterPax('active',this)">Active</button>
+        <button class="pax-filter-btn" onclick="filterPax('q',this)">Q Leaders</button>
+        <input type="text" class="pax-search" id="pax-search" placeholder="Search PAX..." oninput="filterPax('search',null)">
+      </div>
+      <div class="pax-grid" id="pax-grid">
+        <div class="pax-loading">Loading PAX data&hellip;</div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Panel -->
+    <div id="pax-leaderboard" class="pax-panel">
+      <div class="lb-tabs">
+        <button class="lb-tab active" onclick="switchLbTab('alltime',this)">All Time</button>
+        <button class="lb-tab" onclick="switchLbTab('monthly',this)">Monthly</button>
+        <button class="lb-tab" onclick="switchLbTab('qs',this)">Q Leaders</button>
+      </div>
+      <div id="lb-content">
+        <div class="pax-loading">Loading leaderboard&hellip;</div>
+      </div>
+    </div>
+
+    <!-- Region Stats Panel -->
+    <div id="pax-stats" class="pax-panel">
+      <div id="stats-content">
+        <div class="pax-loading">Loading region stats&hellip;</div>
+      </div>
+    </div>
+
+    <!-- Admin Panel (hidden until admin login) -->
+    <div id="pax-admin-bar" class="admin-bar">
+      <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px;">
+        <span style="color:var(--red); font-weight:700; text-transform:uppercase; letter-spacing:.1em; font-size:13px;">Admin Panel</span>
+        <button class="admin-btn-secondary" onclick="adminTriggerSync()" style="font-size:11px; padding:4px 10px;">Trigger Sync</button>
+        <button class="admin-btn-secondary" onclick="adminLogout()" style="font-size:11px; padding:4px 10px;">Logout</button>
+      </div>
+      <div id="admin-edit-area"></div>
+    </div>
+  </section>
+</div><!-- /page-pax -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">F3 <span data-cfg="region">Region</span></div>
+      <div class="footer-tagline"><span data-cfg="city">City, ST</span> &middot; Fitness &middot; Fellowship &middot; Faith</div>
+      <p class="footer-desc">
+        Free, peer-led outdoor workouts for men in the <span data-cfg="city">City</span> area.
+        Open to all men of any fitness level, any day, any weather.
+        Part of the F3 Nation network of 4,000+ workout groups nationwide.
+      </p>
+      <div class="footer-social">
+        <a data-link="facebook" href="#" target="_blank" title="Facebook">f</a>
+        <a data-link="instagram" href="#" target="_blank" title="Instagram">&#x1f4f7;</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Navigate</div>
+      <div class="footer-links">
+        <a href="#" onclick="showPage('home')">Home</a>
+        <a href="#" onclick="showPage('events')">Events</a>
+        <a href="#" onclick="showPage('schedule')">Schedule</a>
+        <a href="#" onclick="showPage('new')">New to F3</a>
+        <a href="#" onclick="showPage('pax')">PAX</a>
+        <a data-link="website" href="#" target="_blank">Blog / Website</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Resources</div>
+      <div class="footer-links" id="footer-legacy-links">
+        <a data-legacy="how-can-we-help" href="#" target="_blank">How Can We Help?</a>
+        <a data-legacy="locations-map"   href="#" target="_blank">Locations Map</a>
+        <a data-legacy="get-started-fng" href="#" target="_blank">Get Started (FNG)</a>
+        <a data-legacy="news-all"        href="#" target="_blank">News &amp; Updates</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Connect</div>
+      <div class="footer-links">
+        <a data-link="facebook" href="#" target="_blank">Facebook</a>
+        <a data-link="instagram" href="#" target="_blank">Instagram</a>
+        <a href="#" onclick="openJoin();return false">Join Us &rarr;</a>
+        <a href="https://f3nation.com" target="_blank">F3 Nation &rarr;</a>
+        <a href="https://map.f3nation.com" target="_blank">F3 Nation Map</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; <span id="footer-year">2026</span> <span data-cfg="f3region">F3 Region</span> &middot; <span data-cfg="city">City, ST</span> &middot; Part of F3 Nation</div>
+    <div class="footer-copy">Come join us in the Gloom.</div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  // ╔═══════════════════════════════════════════════════════════╗
+  // ║  REGION CONFIG — EDIT THIS SECTION FOR YOUR REGION      ║
+  // ║  This is the ONLY section you need to change!           ║
+  // ╚═══════════════════════════════════════════════════════════╝
+  var CONFIG = {
+    // Required — from F3 Nation admin (map.f3nation.com/admin/regions)
+    regionOrgId: 25250,
+
+    // Your region's display name (without "F3" prefix)
+    regionName: 'Snacktown',
+
+    // City, State
+    city: 'Hanover, PA',
+
+    // Year your region was founded
+    founded: 2019,
+
+    // Number of active AOs (workout locations)
+    aoCount: 7,
+
+    // Number of PAX in your region (approximate)
+    paxCount: '50+',
+
+    // Days per week your region posts
+    daysPerWeek: 6,
+
+    // Email address that "Join" form notifications go to (also used as mailto fallback)
+    joinEmail: 'F3.Snacktown.PA@gmail.com',
+
+    // Static AO list — shown when the F3 Nation API returns no events (also used to populate
+    // the "Today" strip and Schedule grid as a fallback). Keep this in sync with the live region.
+    aoFallback: [
+      { name: 'Jumpstart',         day: 1, time: '0500', type: 'Bootcamp / Ruck', city: 'Hanover, PA',     address: '152 Moul Ave, Hanover, PA' },
+      { name: 'Nomad',             day: 2, time: '1715', type: 'Run',             city: 'Glenville, PA',   address: 'Glenville, PA' },
+      { name: 'The Square',        day: 3, time: '0530', type: 'Ruck',            city: 'Hanover, PA',     address: '55 Frederick St, Hanover, PA' },
+      { name: 'Gettysburg',        day: 4, time: '0530', type: 'Bootcamp',        city: 'Gettysburg, PA',  address: '545 Long Lane, Gettysburg, PA' },
+      { name: 'The Corral',        day: 4, time: '1700', type: 'Run',             city: 'Hanover, PA',     address: '4 Southwestern Rd, Hanover, PA' },
+      { name: 'The Logpile',       day: 5, time: '0530', type: 'Bootcamp 30/30',  city: 'Spring Grove, PA',address: 'Roths Church Rd, Spring Grove, PA' },
+      { name: 'Kids Kingdom Park', day: 6, time: '0700', type: 'Bootcamp',        city: 'Hanover, PA',     address: '4615 Grandview Rd, Hanover, PA' },
+    ],
+
+    // Social media URLs (leave blank to hide)
+    facebookUrl: 'https://www.facebook.com/share/193UbPNFgk/',
+    instagramUrl: 'https://www.instagram.com/f3snacktown',
+
+    // Link to your existing website/blog (leave blank to hide)
+    websiteUrl: 'https://f3snacktown.wordpress.com',
+
+    // Base URL of the region's legacy site (used to deep-link footer "Resources"). Leave blank to hide.
+    legacySiteBase: 'https://f3snacktown.wordpress.com',
+
+    // Region hype video URL (Facebook, YouTube, or Vimeo link — leave blank to hide)
+    hypeVideoUrl: 'https://www.facebook.com/share/193UbPNFgk/',
+
+    // Brief description for the hero section
+    heroDesc: 'Free, peer-led outdoor workouts for men. No experience required. No one left behind. Show up before dawn and leave better than you arrived.',
+
+    // Brief description for the "What is F3" section (about your specific region)
+    aboutDesc: 'A growing region with seven workout locations across the area and a roster of PAX who show up rain or shine — all completely free.',
+
+    // Netlify function proxy (don't change unless you know what you're doing)
+    apiBase: '/.netlify/functions/api',
+
+    // PAX data endpoints (powered by Supabase — leave blank to disable PAX features)
+    paxApi: '/api/pax',
+    leaderboardApi: '/api/leaderboard',
+    regionStatsApi: '/api/region-stats',
+    aoStatsApi: '/api/ao-stats',
+    adminVerifyApi: '/api/admin-verify',
+    paxOverridesApi: '/api/pax-overrides',
+    syncApi: '/api/sync',
+  };
+  // ╔═══════════════════════════════════════════════════════════╗
+  // ║  END OF CONFIG — Everything below is auto-generated      ║
+  // ╚═══════════════════════════════════════════════════════════╝
+
+  // Populate all region-specific content from CONFIG
+  function populateConfig() {
+    var R = CONFIG.regionName;
+    var F = 'F3 ' + R;
+    var C = CONFIG.city;
+
+    // Page title & meta
+    var titleText = F + ' — ' + C;
+    var descText  = F + ' — Free, outdoor, peer-led workouts for men in ' + C + '. Fitness. Fellowship. Faith.';
+    document.getElementById('page-title').textContent = titleText;
+    var desc = document.getElementById('page-desc');
+    if (desc) desc.setAttribute('content', descText);
+
+    // SEO / OpenGraph / Twitter
+    var url = (typeof location !== 'undefined') ? location.origin + '/' : '';
+    var setMeta = function(id, attr, val) { var el = document.getElementById(id); if (el && val != null) el.setAttribute(attr, val); };
+    setMeta('canonical-link', 'href', url);
+    setMeta('og-site',  'content', F);
+    setMeta('og-title', 'content', titleText);
+    setMeta('og-desc',  'content', descText);
+    setMeta('og-url',   'content', url);
+    setMeta('og-image', 'content', url + 'og-image.png');
+    setMeta('tw-title', 'content', titleText);
+    setMeta('tw-desc',  'content', descText);
+    // Structured data
+    var ld = document.getElementById('ld-json');
+    if (ld) {
+      ld.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SportsOrganization',
+        name: F,
+        description: descText,
+        url: url,
+        sport: 'Fitness',
+        areaServed: C,
+        founder: 'F3 Nation',
+        foundingDate: CONFIG.founded,
+        parentOrganization: { '@type': 'Organization', name: 'F3 Nation', url: 'https://f3nation.com' },
+        sameAs: [CONFIG.facebookUrl, CONFIG.instagramUrl, CONFIG.websiteUrl].filter(Boolean)
+      });
+    }
+
+    // Replace all data-cfg placeholder spans
+    document.querySelectorAll('[data-cfg]').forEach(function(el) {
+      var key = el.dataset.cfg;
+      if (key === 'region') el.textContent = R;
+      else if (key === 'f3region') el.textContent = F;
+      else if (key === 'city') el.textContent = C;
+      else if (key === 'cityEst') el.textContent = C + ' \u00B7 Est. ' + CONFIG.founded;
+      else if (key === 'aoCount') el.textContent = CONFIG.aoCount;
+      else if (key === 'paxCount') el.textContent = CONFIG.paxCount;
+      else if (key === 'daysPerWeek') el.textContent = CONFIG.daysPerWeek;
+      else if (key === 'heroDesc') el.textContent = CONFIG.heroDesc;
+      else if (key === 'aboutDesc') el.textContent = CONFIG.aboutDesc;
+    });
+
+    // Social links
+    document.querySelectorAll('[data-link="facebook"]').forEach(function(a) {
+      if (CONFIG.facebookUrl) { a.href = CONFIG.facebookUrl; a.style.display = ''; }
+      else a.style.display = 'none';
+    });
+    document.querySelectorAll('[data-link="instagram"]').forEach(function(a) {
+      if (CONFIG.instagramUrl) { a.href = CONFIG.instagramUrl; a.style.display = ''; }
+      else a.style.display = 'none';
+    });
+    document.querySelectorAll('[data-link="website"]').forEach(function(a) {
+      if (CONFIG.websiteUrl) { a.href = CONFIG.websiteUrl; a.style.display = ''; }
+      else a.style.display = 'none';
+    });
+
+    // Hype video
+    var hvp = document.getElementById('hype-video-placeholder');
+    if (hvp && CONFIG.hypeVideoUrl) {
+      hvp.onclick = function() { window.open(CONFIG.hypeVideoUrl, '_blank'); };
+    }
+
+    // Nav logo
+    var logo = document.querySelectorAll('.nav-logo span');
+    logo.forEach(function(s) { s.textContent = R.toUpperCase(); });
+
+    // Footer legacy links → WordPress site
+    var legacyLinks = document.getElementById('footer-legacy-links');
+    if (legacyLinks) {
+      if (CONFIG.legacySiteBase) {
+        var base = CONFIG.legacySiteBase.replace(/\/$/, '');
+        legacyLinks.querySelectorAll('a[data-legacy]').forEach(function(a) {
+          a.href = base + '/' + a.dataset.legacy + '/';
+        });
+      } else {
+        legacyLinks.parentElement.style.display = 'none';
+      }
+    }
+
+    // Join modal mailto fallback
+    var mt = document.getElementById('join-mailto');
+    if (mt && CONFIG.joinEmail) {
+      mt.href = 'mailto:' + CONFIG.joinEmail + '?subject=' + encodeURIComponent('New PAX inquiry — ' + F);
+    }
+  }
+
+  // ── JOIN MODAL ──────────────────────────────────────────────
+  window.openJoin = function() {
+    var m = document.getElementById('join-modal');
+    if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  };
+  window.closeJoin = function() {
+    var m = document.getElementById('join-modal');
+    if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+    var s = document.getElementById('join-status'); if (s) { s.textContent = ''; s.className = 'join-status'; }
+  };
+  window.submitJoin = function(ev) {
+    ev.preventDefault();
+    var form = ev.target;
+    var status = document.getElementById('join-status');
+    status.textContent = 'Sending…'; status.className = 'join-status';
+    var data = new URLSearchParams();
+    Array.prototype.forEach.call(form.elements, function(el) {
+      if (el.name) data.append(el.name, el.value);
+    });
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() })
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        status.textContent = 'Thanks — the SLT will be in touch shortly.';
+        status.className = 'join-status ok';
+        form.reset();
+        setTimeout(closeJoin, 2500);
+      })
+      .catch(function(err) {
+        status.innerHTML = 'Couldn’t send. <a href="' + (document.getElementById('join-mailto')||{}).href + '" style="color:var(--red)">Email us directly &rarr;</a>';
+        status.className = 'join-status err';
+      });
+    return false;
+  };
+
+  var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var scheduleData = [];
+  var paxData = [];
+  var leaderboardData = null;
+  var regionStatsData = null;
+  var aoLocations = {}; // org_id → name lookup
+
+  // ── PAGE ROUTING ────────────────────────────────────────────
+  window.showPage = function(page) {
+    var pages = ['home','events','schedule','new','pax'];
+    pages.forEach(function(p) {
+      var el = document.getElementById('page-' + p);
+      if (el) el.style.display = (p === page) ? '' : 'none';
+    });
+    // Update nav active state
+    document.querySelectorAll('.nav-primary a').forEach(function(a) {
+      a.classList.toggle('active', a.dataset.page === page);
+    });
+    window.scrollTo(0, 0);
+
+    // Show sub-nav for certain pages
+    var subNav = document.getElementById('nav-sub');
+    subNav.innerHTML = '';
+    subNav.classList.remove('visible');
+
+    if (page === 'new') {
+      subNav.innerHTML = [
+        '<a href="#" class="active">Watch the Video</a>',
+        '<a href="#" onclick="document.querySelector(\'.new-content-grid\').scrollIntoView({behavior:\'smooth\'})">What is F3?</a>',
+        '<a href="#" onclick="document.querySelector(\'.faq-list\').scrollIntoView({behavior:\'smooth\'})">FAQ</a>',
+        '<a href="#" onclick="showPage(\'schedule\')">Find a Workout</a>',
+        '<a href="#" onclick="showPage(\'schedule\')">Join F3</a>',
+      ].join('');
+      subNav.classList.add('visible');
+    }
+
+    // Load data for page
+    if (page === 'schedule' && !document.querySelector('.ao-card')) loadSchedule();
+    if (page === 'events') loadEvents();
+    if (page === 'pax' && !paxData.length) loadPaxPage();
+
+    // Show sub-nav for PAX page
+    if (page === 'pax') {
+      subNav.innerHTML = [
+        '<a href="#" class="active" onclick="switchPaxTab(\'vault\',document.querySelector(\'.pax-tab\'))">PAX Vault</a>',
+        '<a href="#" onclick="switchPaxTab(\'leaderboard\',null)">Leaderboard</a>',
+        '<a href="#" onclick="switchPaxTab(\'stats\',null)">Stats</a>',
+      ].join('');
+      subNav.classList.add('visible');
+    }
+
+    // Show/hide admin toggle
+    var adminBtn = document.getElementById('admin-toggle-btn');
+    if (adminBtn) adminBtn.style.display = (page === 'pax') ? '' : 'none';
+  };
+
+  // ── MOBILE MENU ─────────────────────────────────────────────
+  window.toggleMobileMenu = function() {
+    document.getElementById('mobile-drawer').classList.toggle('open');
+  };
+
+  // ── FAQ ACCORDION ───────────────────────────────────────────
+  window.toggleFaq = function(btn) {
+    btn.parentElement.classList.toggle('open');
+  };
+
+  // ── API FETCH ───────────────────────────────────────────────
+  function fetchSchedule(callback) {
+    if (scheduleData.length) return callback(scheduleData);
+    var url = CONFIG.apiBase + '?regionOrgId=' + CONFIG.regionOrgId;
+
+    fetch(url).then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) {
+          console.warn('API warning:', data.error, data.apiResponse || '');
+        }
+        scheduleData = (data.events && data.events.length) ? data.events : aoFallbackToEvents();
+        callback(scheduleData);
+      })
+      .catch(function(err) {
+        console.error('API fetch failed:', err);
+        scheduleData = aoFallbackToEvents();
+        callback(scheduleData);
+      });
+  }
+
+  // Match a live API event back to a CONFIG.aoFallback entry by name — used to
+  // backfill location/address since the F3 Nation /calendar-home-schedule endpoint
+  // does not include them.
+  function aoFallbackMatch(orgName) {
+    if (!orgName || !CONFIG.aoFallback) return null;
+    var needle = String(orgName).toLowerCase().replace(/[^a-z0-9]/g, '');
+    for (var i = 0; i < CONFIG.aoFallback.length; i++) {
+      var hay = CONFIG.aoFallback[i].name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (hay === needle || needle.indexOf(hay) >= 0 || hay.indexOf(needle) >= 0) {
+        return CONFIG.aoFallback[i];
+      }
+    }
+    return null;
+  }
+
+  function aoFallbackToEvents() {
+    if (!CONFIG.aoFallback || !CONFIG.aoFallback.length) return [];
+    var today = new Date();
+    var todayDay = today.getDay();
+    return CONFIG.aoFallback.map(function(ao) {
+      var delta = (ao.day - todayDay + 7) % 7;
+      var d = new Date(today); d.setDate(today.getDate() + delta);
+      var iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      return {
+        orgName: ao.name,
+        startTime: ao.time,
+        startDate: iso,
+        locationDescription: ao.city,
+        locationAddress: ao.address,
+        eventTypes: ao.type ? [{ name: ao.type }] : []
+      };
+    });
+  }
+
+  // ── HELPERS ─────────────────────────────────────────────────
+  function formatTime(raw) {
+    if (!raw) return '0530';
+    var h = parseInt(raw.slice(0,2)), m = raw.slice(2,4) || '00';
+    var ap = h >= 12 ? 'PM' : 'AM';
+    h = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    return h + ':' + m + ' ' + ap;
+  }
+
+  function getTypeBadge(types) {
+    if (!types || !types.length) return '<span class="ao-badge badge-bc">Bootcamp</span>';
+    return types.map(function(t) {
+      var n = t.name.toLowerCase();
+      var cls = n.includes('run') ? 'badge-run' :
+                n.includes('ruck') ? 'badge-ruck' :
+                (n.includes('bike') || n.includes('cycl')) ? 'badge-bike' : 'badge-bc';
+      return '<span class="ao-badge ' + cls + '">' + t.name + '</span>';
+    }).join(' ');
+  }
+
+  function dedupeByOrg(events) {
+    var seen = {}, unique = [];
+    events.forEach(function(e) {
+      var key = e.orgId || e.seriesId || e.orgName;
+      if (!seen[key]) { seen[key] = true; unique.push(e); }
+    });
+    return unique;
+  }
+
+  // ── TODAY STRIP ─────────────────────────────────────────────
+  function loadTodayStrip() {
+    fetchSchedule(function(events) {
+      var today = new Date();
+      var todayStr = today.toISOString().split('T')[0];
+      var dayNum = today.getDay();
+
+      // Find today's workouts
+      var todayEvents = events.filter(function(e) {
+        var d = new Date((e.startDate || todayStr) + 'T12:00:00');
+        return d.getDay() === dayNum;
+      });
+      todayEvents = dedupeByOrg(todayEvents);
+
+      var container = document.getElementById('today-strip-content');
+      if (!todayEvents.length) {
+        container.innerHTML = '<div style="color:var(--muted); font-size:13px;">No workouts scheduled today</div>';
+        return;
+      }
+
+      container.innerHTML = todayEvents.map(function(e) {
+        var raw = e.startTime || '0530';
+        var types = e.eventTypes || [];
+        var tn = types.length ? types[0].name.toLowerCase() : 'bc';
+        var tc = tn.includes('run') ? 'type-run' : tn.includes('ruck') ? 'type-ruck' : 'type-bc';
+        return '<div class="today-ao">' +
+          '<div><div class="today-ao-time">' + formatTime(raw) + '</div></div>' +
+          '<div><div class="today-ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
+          '<span class="today-ao-type ' + tc + '">' + (types.length ? types[0].name : 'Bootcamp') + '</span></div>' +
+          '</div>';
+      }).join('');
+
+      // Update next workout banner
+      var next = todayEvents[0];
+      if (next) {
+        var nText = document.getElementById('next-workout-text');
+        var nDetails = document.getElementById('next-workout-details');
+        nText.childNodes[0].textContent = 'YOUR NEXT WORKOUT STARTS AT ' + formatTime(next.startTime);
+        nDetails.textContent = (next.orgName || 'AO') + ' \u00B7 ' + (next.locationDescription || CONFIG.city);
+      }
+    });
+  }
+
+  // ── SCHEDULE PAGE ───────────────────────────────────────────
+  window.filterSchedule = function(day, btn) {
+    document.querySelectorAll('.schedule-tab').forEach(function(t) { t.classList.remove('active'); });
+    btn.classList.add('active');
+    renderScheduleGrid(day);
+  };
+
+  function loadSchedule() {
+    fetchSchedule(function(events) {
+      renderScheduleGrid('all');
+    });
+  }
+
+  function renderScheduleGrid(dayFilter) {
+    var grid = document.getElementById('schedule-grid');
+    var events = dedupeByOrg(scheduleData);
+
+    if (!events.length) {
+      grid.innerHTML = '<div class="schedule-loading">No workouts found. Check back soon or verify the API connection.</div>';
+      return;
+    }
+
+    var filtered = events;
+    if (dayFilter !== 'all') {
+      filtered = events.filter(function(e) {
+        var d = new Date((e.startDate || new Date().toISOString().split('T')[0]) + 'T12:00:00');
+        return String(d.getDay()) === dayFilter;
+      });
+    }
+
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="schedule-loading">No workouts on this day.</div>';
+      return;
+    }
+
+    // Mon→Sun sort: remap Sun(0) to last
+    function weekIdx(d) { return d === 0 ? 7 : d; }
+    filtered.sort(function(a, b) {
+      var da = weekIdx(new Date((a.startDate || '2026-01-01') + 'T12:00:00').getDay());
+      var db = weekIdx(new Date((b.startDate || '2026-01-01') + 'T12:00:00').getDay());
+      if (da !== db) return da - db;
+      return (a.startTime || '0000').localeCompare(b.startTime || '0000');
+    });
+
+    grid.innerHTML = filtered.map(function(e) {
+      var d = new Date((e.startDate || new Date().toISOString().split('T')[0]) + 'T12:00:00');
+      var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
+      var loc = e.locationDescription || (fb && fb.city) || '';
+      var addr = e.locationAddress || e.address || (fb && fb.address) || '';
+      var mapUrl = loc || addr ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr || loc) : '';
+      // F3 Nation API returns Q in `plannedQs` (string). Fall back to other shapes.
+      var qName = e.plannedQs || e.qName || e.q_name || (Array.isArray(e.qs) && e.qs.length ? e.qs.map(function(q){return q.name||q;}).join(' & ') : '');
+      return '<div class="ao-card">' +
+        '<div class="ao-header">' +
+          '<div>' +
+            '<div class="ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
+            '<div class="ao-day">' + DAYS[d.getDay()] + '</div>' +
+          '</div>' +
+          '<div class="ao-time">' + formatTime(e.startTime) + '</div>' +
+        '</div>' +
+        '<div class="ao-body">' +
+          (loc ? '<div class="ao-loc">&#x1f4cd; ' + escHtml(loc) + '</div>' : '') +
+          (qName ? '<div class="ao-q">&#x1f3af; Q: <strong>' + escHtml(qName) + '</strong></div>' : '') +
+          '<div class="ao-footer">' +
+            '<span class="ao-types">' + getTypeBadge(e.eventTypes) + '</span>' +
+            (mapUrl ? '<a class="btn-map" href="' + mapUrl + '" target="_blank">Map &rarr;</a>' : '') +
+          '</div>' +
+        '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // ── EVENTS PAGE ─────────────────────────────────────────────
+  window.filterEvents = function(tab, btn) {
+    document.querySelectorAll('.events-sub-tab').forEach(function(t) { t.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('events-today-container').style.display = (tab === 'today' || tab === 'all') ? '' : 'none';
+    document.getElementById('events-upcoming-container').style.display = (tab === 'upcoming' || tab === 'all') ? '' : 'none';
+  };
+
+  function loadEvents() {
+    var today = new Date();
+    var todayStr = today.toISOString().split('T')[0];
+    document.getElementById('events-today-date').textContent =
+      DAYS[today.getDay()] + ' \u00B7 ' + MONTHS[today.getMonth()] + ' ' + today.getDate();
+
+    fetchSchedule(function(events) {
+      var dayNum = today.getDay();
+
+      // Today's events
+      var todayEvents = dedupeByOrg(events.filter(function(e) {
+        var d = new Date((e.startDate || todayStr) + 'T12:00:00');
+        return d.getDay() === dayNum;
+      }));
+
+      var todayGrid = document.getElementById('events-today-grid');
+      if (!todayEvents.length) {
+        todayGrid.innerHTML = '<div style="color:var(--muted); font-size:14px; padding:12px;">No workouts scheduled today.</div>';
+      } else {
+        todayGrid.innerHTML = todayEvents.map(function(e) {
+          var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
+          var loc = e.locationDescription || (fb && fb.city) || '';
+          return '<div class="event-card">' +
+            '<div class="event-card-time">' + formatTime(e.startTime) + '</div>' +
+            '<div class="event-card-name">' + (e.orgName || e.name || 'AO') + '</div>' +
+            '<div class="event-card-loc">' + escHtml(loc) + '</div>' +
+            '<div style="margin-top:8px">' + getTypeBadge(e.eventTypes) + '</div>' +
+            '</div>';
+        }).join('');
+      }
+
+      // Upcoming (next 7 days, skip today)
+      var upcoming = [];
+      for (var i = 1; i <= 7; i++) {
+        var futureDay = (dayNum + i) % 7;
+        var futureEvents = dedupeByOrg(events.filter(function(e) {
+          var d = new Date((e.startDate || todayStr) + 'T12:00:00');
+          return d.getDay() === futureDay;
+        }));
+        var futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + i);
+        futureEvents.forEach(function(e) { e._displayDate = futureDate; });
+        upcoming = upcoming.concat(futureEvents);
+      }
+
+      var upcomingList = document.getElementById('events-upcoming-list');
+      if (!upcoming.length) {
+        upcomingList.innerHTML = '<div style="color:var(--muted); font-size:14px; padding:12px;">No upcoming events found.</div>';
+      } else {
+        upcomingList.innerHTML = upcoming.slice(0, 15).map(function(e) {
+          var dd = e._displayDate;
+          var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
+          var loc = e.locationDescription || (fb && fb.city) || '';
+          return '<div class="upcoming-row">' +
+            '<div class="upcoming-date-block">' +
+              '<div class="day">' + dd.getDate() + '</div>' +
+              '<div class="month">' + MONTHS[dd.getMonth()] + '</div>' +
+            '</div>' +
+            '<div class="upcoming-info">' +
+              '<div class="name">' + (e.orgName || e.name || 'AO') + '</div>' +
+              '<div class="details">' + escHtml(loc) + '</div>' +
+            '</div>' +
+            '<div class="upcoming-time">' + formatTime(e.startTime) + '</div>' +
+            '</div>';
+        }).join('');
+      }
+    });
+  }
+
+  // ── PAX PAGE ──────────────────────────────────────────────
+
+  function loadPaxPage() {
+    if (!CONFIG.paxApi) {
+      showPaxEmpty('PAX directory is not yet configured. Once your region\'s Supabase sync runs, the roster, leaderboard and stats will populate here automatically.');
+      return;
+    }
+    fetchPax(function() { renderPaxCards('all'); });
+    // Pre-warm leaderboard + stats so switching tabs is instant
+    if (!leaderboardData) loadLeaderboard();
+    if (!regionStatsData) loadRegionStats();
+    // Pre-fetch AO names for display
+    if (CONFIG.aoStatsApi) {
+      fetch(CONFIG.aoStatsApi).then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (Array.isArray(data)) {
+            data.forEach(function(ao) { aoLocations[ao.ao_org_id] = ao.ao_name; });
+          }
+        }).catch(function() {});
+    }
+  }
+
+  function showPaxEmpty(msg) {
+    var html = '<div class="pax-empty">' + escHtml(msg) + '</div>';
+    var grid = document.getElementById('pax-grid'); if (grid) grid.innerHTML = html;
+    var lb = document.getElementById('lb-content'); if (lb) lb.innerHTML = html;
+    var st = document.getElementById('stats-content'); if (st) st.innerHTML = html;
+  }
+
+  function fetchPax(callback) {
+    if (paxData.length) return callback(paxData);
+    var grid = document.getElementById('pax-grid');
+    if (grid) grid.innerHTML = '<div class="pax-loading">Loading PAX data&hellip;</div>';
+
+    fetch(CONFIG.paxApi).then(function(r) { return r.json(); })
+      .then(function(data) {
+        paxData = Array.isArray(data) ? data : [];
+        callback(paxData);
+      })
+      .catch(function(err) {
+        console.error('PAX fetch failed:', err);
+        if (grid) grid.innerHTML = '<div class="pax-loading" style="color:var(--red)">Failed to load PAX data.</div>';
+      });
+  }
+
+  window.switchPaxTab = function(tab, btn) {
+    // Update tab buttons
+    document.querySelectorAll('.pax-tab').forEach(function(t) { t.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    else {
+      document.querySelectorAll('.pax-tab').forEach(function(t) {
+        if (t.textContent.toLowerCase().indexOf(tab) >= 0) t.classList.add('active');
+      });
+    }
+
+    // Show/hide panels
+    document.querySelectorAll('.pax-panel').forEach(function(p) { p.classList.remove('active'); });
+    var panelId = tab === 'vault' ? 'pax-vault' : tab === 'leaderboard' ? 'pax-leaderboard' : 'pax-stats';
+    var panel = document.getElementById(panelId);
+    if (panel) panel.classList.add('active');
+
+    // Load data on first visit
+    if (tab === 'leaderboard' && !leaderboardData) loadLeaderboard();
+    if (tab === 'stats' && !regionStatsData) loadRegionStats();
+  };
+
+  // ── PAX VAULT ───────────────────────────────────────────
+
+  window.filterPax = function(filter, btn) {
+    if (btn) {
+      document.querySelectorAll('.pax-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    }
+    renderPaxCards(filter);
+  };
+
+  function renderPaxCards(filter) {
+    var grid = document.getElementById('pax-grid');
+    if (!grid) return;
+    if (!paxData.length) {
+      grid.innerHTML = '<div class="pax-empty">No PAX in the directory yet. Once the nightly sync runs, the roster appears here.</div>';
+      return;
+    }
+
+    var filtered = paxData;
+    if (filter === 'active') {
+      filtered = paxData.filter(function(p) { return p.is_active_roster; });
+    } else if (filter === 'q') {
+      filtered = paxData.filter(function(p) { return p.q_count > 0; });
+      filtered.sort(function(a, b) { return (b.q_count || 0) - (a.q_count || 0); });
+    } else if (filter === 'search') {
+      var term = (document.getElementById('pax-search').value || '').toLowerCase();
+      if (term) {
+        filtered = paxData.filter(function(p) {
+          return (p.handle || '').toLowerCase().indexOf(term) >= 0 ||
+                 (p.position || '').toLowerCase().indexOf(term) >= 0;
+        });
+      }
+    }
+
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="pax-loading">No PAX found.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(function(p) {
+      var avatar = p.override_photo_url || p.avatar_url;
+      var avatarHtml = avatar
+        ? '<img class="pax-avatar" src="' + escHtml(avatar) + '" alt="' + escHtml(p.handle) + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+          '<div class="pax-avatar-placeholder" style="display:none">' + escHtml((p.handle || '?')[0]) + '</div>'
+        : '<div class="pax-avatar-placeholder">' + escHtml((p.handle || '?')[0]) + '</div>';
+
+      var aoName = p.home_ao_id ? (aoLocations[p.home_ao_id] || '') : '';
+      var positionHtml = p.position ? '<div class="pax-position-badge">' + escHtml(p.position) + '</div>' : '';
+      var bioHtml = p.bio ? '<div class="pax-back-bio">' + escHtml(p.bio) + '</div>' : '';
+      var isAdmin = isPaxAdmin();
+      var adminHtml = isAdmin ? '<div style="margin-top:8px"><button class="admin-btn" style="font-size:11px;padding:3px 8px" onclick="event.stopPropagation();openPaxEdit(' + p.pax_id + ')">Edit</button></div>' : '';
+
+      return '<div class="pax-card" onclick="this.classList.toggle(\'flipped\')">' +
+        '<div class="pax-card-inner">' +
+          '<div class="pax-card-front">' +
+            positionHtml +
+            avatarHtml +
+            '<div class="pax-handle">' + escHtml(p.handle) + '</div>' +
+            (aoName ? '<div class="pax-home-ao">' + escHtml(aoName) + '</div>' : '') +
+            '<div class="pax-stat-row">' +
+              '<div><div class="pax-stat-val">' + (p.workout_count || 0) + '</div>Posts</div>' +
+              '<div><div class="pax-stat-val">' + (p.q_count || 0) + '</div>Qs</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pax-card-back">' +
+            '<div class="pax-handle" style="font-size:16px;margin-bottom:8px">' + escHtml(p.handle) + '</div>' +
+            bioHtml +
+            '<div class="pax-back-stats">' +
+              'YTD Posts: ' + (p.workout_count_ytd || 0) + ' | YTD Qs: ' + (p.q_count_ytd || 0) +
+              (p.first_seen ? '<br>Member since: ' + p.first_seen : '') +
+            '</div>' +
+            adminHtml +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── LEADERBOARD ─────────────────────────────────────────
+
+  function loadLeaderboard() {
+    if (!CONFIG.leaderboardApi) return;
+    var content = document.getElementById('lb-content');
+    if (content) content.innerHTML = '<div class="pax-loading">Loading leaderboard&hellip;</div>';
+
+    fetch(CONFIG.leaderboardApi).then(function(r) { return r.json(); })
+      .then(function(data) {
+        leaderboardData = data;
+        renderLeaderboard('alltime');
+      })
+      .catch(function(err) {
+        console.error('Leaderboard fetch failed:', err);
+        if (content) content.innerHTML = '<div class="pax-loading" style="color:var(--red)">Failed to load leaderboard.</div>';
+      });
+  }
+
+  window.switchLbTab = function(tab, btn) {
+    document.querySelectorAll('.lb-tab').forEach(function(t) { t.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    renderLeaderboard(tab);
+  };
+
+  function renderLeaderboard(tab) {
+    var content = document.getElementById('lb-content');
+    if (!content || !leaderboardData) return;
+
+    var pax = (leaderboardData.pax || []).slice();
+    var title = 'All Time Workout Leaders';
+
+    if (tab === 'monthly') {
+      title = leaderboardData.month_label + ' Leaders';
+      pax.sort(function(a, b) { return (b.workout_count_month || 0) - (a.workout_count_month || 0); });
+    } else if (tab === 'qs') {
+      title = 'Q Leaders (All Time)';
+      pax.sort(function(a, b) { return (b.q_count || 0) - (a.q_count || 0); });
+    } else {
+      pax.sort(function(a, b) { return (b.workout_count || 0) - (a.workout_count || 0); });
+    }
+
+    var countKey = tab === 'monthly' ? 'workout_count_month' : tab === 'qs' ? 'q_count' : 'workout_count';
+    var countLabel = tab === 'qs' ? 'Qs' : 'Posts';
+
+    var html = '<h3 style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;color:var(--white);margin-bottom:16px">' + title + '</h3>';
+    html += '<table class="lb-table"><thead><tr><th>#</th><th>PAX</th><th>' + countLabel + '</th></tr></thead><tbody>';
+
+    pax.slice(0, 50).forEach(function(p, i) {
+      var rank = i + 1;
+      var rankClass = rank <= 3 ? ' lb-rank-' + rank : '';
+      var avatar = p.override_photo_url || p.avatar_url;
+      var avatarHtml = avatar
+        ? '<img class="lb-avatar-sm" src="' + escHtml(avatar) + '" onerror="this.style.display=\'none\'">'
+        : '';
+
+      html += '<tr>' +
+        '<td class="lb-rank' + rankClass + '">' + rank + '</td>' +
+        '<td>' + avatarHtml + '<span class="lb-handle">' + escHtml(p.handle) + '</span></td>' +
+        '<td class="lb-count">' + (p[countKey] || 0) + '</td>' +
+      '</tr>';
+    });
+
+    html += '</tbody></table>';
+    content.innerHTML = html;
+  }
+
+  // ── REGION STATS ────────────────────────────────────────
+
+  function loadRegionStats() {
+    if (!CONFIG.regionStatsApi) return;
+    var content = document.getElementById('stats-content');
+    if (content) content.innerHTML = '<div class="pax-loading">Loading region stats&hellip;</div>';
+
+    fetch(CONFIG.regionStatsApi).then(function(r) { return r.json(); })
+      .then(function(data) {
+        regionStatsData = data;
+        renderRegionStats(data);
+      })
+      .catch(function(err) {
+        console.error('Region stats fetch failed:', err);
+        if (content) content.innerHTML = '<div class="pax-loading" style="color:var(--red)">Failed to load stats.</div>';
+      });
+  }
+
+  function renderRegionStats(data) {
+    var content = document.getElementById('stats-content');
+    if (!content) return;
+
+    var html = '<div class="stats-grid">';
+    html += statCard(data.active_pax_count || 0, 'Active PAX');
+    html += statCard(data.total_pax_count || 0, 'Total PAX');
+    html += statCard(data.events_ytd || 0, 'Workouts YTD');
+    html += statCard(data.avg_pax_30d || 0, 'Avg PAX (30d)');
+    html += '</div>';
+
+    // Attendance by day chart
+    var byDay = data.attendance_by_day;
+    if (byDay && typeof byDay === 'object') {
+      html += '<h3 style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--white);margin-bottom:8px">Avg Attendance by Day</h3>';
+      var dayOrder = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+      var maxVal = 0;
+      dayOrder.forEach(function(d) { var v = parseFloat(byDay[d]) || 0; if (v > maxVal) maxVal = v; });
+
+      html += '<div class="day-chart">';
+      dayOrder.forEach(function(d) {
+        var val = parseFloat(byDay[d]) || 0;
+        var pct = maxVal > 0 ? (val / maxVal * 100) : 0;
+        html += '<div class="day-bar-wrap">' +
+          '<div class="day-bar-value">' + val + '</div>' +
+          '<div class="day-bar" style="height:' + Math.max(pct, 3) + '%"></div>' +
+          '<div class="day-bar-label">' + d.slice(0, 3) + '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Top AOs
+    var topAos = data.top_aos;
+    if (Array.isArray(topAos) && topAos.length) {
+      html += '<h3 style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--white);margin:32px 0 12px">Top AOs (30d Avg)</h3>';
+      html += '<table class="lb-table"><thead><tr><th>AO</th><th>Avg PAX</th></tr></thead><tbody>';
+      topAos.forEach(function(ao) {
+        html += '<tr><td>' + escHtml(ao.name || 'Unknown') + '</td><td class="lb-count">' + (ao.avg_pax || 0) + '</td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+
+    content.innerHTML = html;
+  }
+
+  function statCard(value, label) {
+    return '<div class="stat-card">' +
+      '<div class="stat-card-value">' + value + '</div>' +
+      '<div class="stat-card-label">' + label + '</div>' +
+    '</div>';
+  }
+
+  // ── ADMIN ───────────────────────────────────────────────
+
+  function isPaxAdmin() {
+    return !!sessionStorage.getItem('f3_admin_token');
+  }
+
+  window.toggleAdmin = function() {
+    if (isPaxAdmin()) {
+      // Show admin bar
+      var bar = document.getElementById('pax-admin-bar');
+      if (bar) bar.classList.toggle('visible');
+    } else {
+      // Prompt for passcode
+      var passcode = prompt('Enter admin passcode:');
+      if (!passcode) return;
+      adminLogin(passcode);
+    }
+  };
+
+  function adminLogin(passcode) {
+    if (!CONFIG.adminVerifyApi) return alert('Admin not configured.');
+    fetch(CONFIG.adminVerifyApi, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ passcode: passcode }),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.ok && data.token) {
+        sessionStorage.setItem('f3_admin_token', data.token);
+        var btn = document.getElementById('admin-toggle-btn');
+        if (btn) btn.classList.add('authed');
+        var bar = document.getElementById('pax-admin-bar');
+        if (bar) bar.classList.add('visible');
+        // Re-render PAX cards to show edit buttons
+        renderPaxCards('all');
+      } else {
+        alert(data.error || 'Login failed.');
+      }
+    })
+    .catch(function(err) { alert('Login error: ' + err.message); });
+  }
+
+  window.adminLogout = function() {
+    sessionStorage.removeItem('f3_admin_token');
+    var btn = document.getElementById('admin-toggle-btn');
+    if (btn) btn.classList.remove('authed');
+    var bar = document.getElementById('pax-admin-bar');
+    if (bar) bar.classList.remove('visible');
+    renderPaxCards('all');
+  };
+
+  window.openPaxEdit = function(paxId) {
+    var p = paxData.find(function(x) { return x.pax_id === paxId; });
+    if (!p) return;
+
+    var area = document.getElementById('admin-edit-area');
+    if (!area) return;
+
+    area.innerHTML = '<h4 style="color:var(--white);font-family:\'Bebas Neue\',sans-serif;margin-bottom:12px">Edit: ' + escHtml(p.handle) + '</h4>' +
+      '<label>Position</label><input id="edit-position" value="' + escHtml(p.position || '') + '">' +
+      '<label>Bio</label><textarea id="edit-bio">' + escHtml(p.bio || '') + '</textarea>' +
+      '<label>Photo URL</label><input id="edit-photo" value="' + escHtml(p.override_photo_url || '') + '">' +
+      '<label>Video URL</label><input id="edit-video" value="' + escHtml(p.video_url || '') + '">' +
+      '<div style="margin-top:12px;display:flex;gap:8px">' +
+        '<button class="admin-btn" onclick="savePaxEdit(' + paxId + ')">Save</button>' +
+        '<button class="admin-btn-secondary" onclick="document.getElementById(\'admin-edit-area\').innerHTML=\'\'">Cancel</button>' +
+      '</div>';
+
+    // Scroll admin bar into view
+    var bar = document.getElementById('pax-admin-bar');
+    if (bar) bar.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  window.savePaxEdit = function(paxId) {
+    var token = sessionStorage.getItem('f3_admin_token');
+    if (!token) return alert('Not logged in.');
+
+    var payload = {
+      position: document.getElementById('edit-position').value,
+      bio: document.getElementById('edit-bio').value,
+      photo_url: document.getElementById('edit-photo').value,
+      video_url: document.getElementById('edit-video').value,
+    };
+
+    fetch(CONFIG.paxOverridesApi + '?id=' + paxId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-F3-Admin-Token': token,
+      },
+      body: JSON.stringify(payload),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.ok) {
+        // Update local data
+        var p = paxData.find(function(x) { return x.pax_id === paxId; });
+        if (p) {
+          p.position = payload.position;
+          p.bio = payload.bio;
+          p.override_photo_url = payload.photo_url;
+          p.video_url = payload.video_url;
+        }
+        document.getElementById('admin-edit-area').innerHTML = '<div style="color:var(--amber);padding:8px">Saved!</div>';
+        renderPaxCards('all');
+      } else {
+        alert(data.error || 'Save failed.');
+      }
+    })
+    .catch(function(err) { alert('Save error: ' + err.message); });
+  };
+
+  window.adminTriggerSync = function() {
+    if (!confirm('Trigger a manual data sync from F3 Nation API?')) return;
+    var token = sessionStorage.getItem('f3_admin_token');
+    fetch(CONFIG.syncApi, {
+      method: 'POST',
+      headers: token ? { 'X-F3-Admin-Token': token } : {},
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      alert('Sync ' + (data.status || 'triggered') + '. Events: ' + (data.calls ? JSON.stringify(data.calls.map(function(c) { return c.endpoint + ': ' + (c.written || c.fetched || 0); })) : 'unknown'));
+    })
+    .catch(function(err) { alert('Sync error: ' + err.message); });
+  };
+
+  // ── HTML ESCAPE HELPER ──────────────────────────────────
+
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+
+  // ── INIT ────────────────────────────────────────────────────
+  populateConfig();
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
+  loadTodayStrip();
+
+})();
+</script>
+
+<!-- Admin toggle button (fixed position, only visible on PAX page) -->
+<button id="admin-toggle-btn" class="admin-toggle" style="display:none" onclick="toggleAdmin()">Admin</button>
+
+<!-- Hidden form so Netlify detects "join" at build time -->
+<form name="join" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="name"><input name="email" type="email"><textarea name="message"></textarea><input name="bot-field">
+</form>
+
+<!-- Join modal -->
+<div id="join-modal" class="join-modal" onclick="if(event.target===this)closeJoin()">
+  <div class="join-modal-inner">
+    <button class="join-close" onclick="closeJoin()" aria-label="Close">&times;</button>
+    <div class="join-eyebrow">Join</div>
+    <div class="join-title">Come Post With Us</div>
+    <p class="join-sub">Drop your info and the SLT will reach out with the next workout that fits your schedule. No fee. No commitment.</p>
+    <form id="join-form" name="join" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return submitJoin(event)">
+      <input type="hidden" name="form-name" value="join">
+      <p hidden><label>Don't fill: <input name="bot-field"></label></p>
+      <label class="join-label">Name<input type="text" name="name" required></label>
+      <label class="join-label">Email<input type="email" name="email" required></label>
+      <label class="join-label">Phone (optional)<input type="tel" name="phone"></label>
+      <label class="join-label">Anything we should know?<textarea name="message" rows="3"></textarea></label>
+      <div class="join-actions">
+        <button type="submit" class="btn-primary">Send &rarr;</button>
+        <button type="button" class="btn-ghost" onclick="closeJoin()">Cancel</button>
+      </div>
+      <div class="join-status" id="join-status"></div>
+      <p class="join-fallback">Prefer email? <a id="join-mailto" href="mailto:">Send a note directly</a>.</p>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

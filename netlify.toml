@@ -1,0 +1,53 @@
+[build]
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Nightly sync: F3 Nation API → Supabase (8am UTC / 3am ET)
+[functions."sync"]
+  schedule = "0 8 * * *"
+
+# ── Specific API routes (must come BEFORE the catch-all) ─────
+
+[[redirects]]
+  from = "/api/pax"
+  to = "/.netlify/functions/pax"
+  status = 200
+
+[[redirects]]
+  from = "/api/leaderboard"
+  to = "/.netlify/functions/leaderboard"
+  status = 200
+
+[[redirects]]
+  from = "/api/region-stats"
+  to = "/.netlify/functions/region-stats"
+  status = 200
+
+[[redirects]]
+  from = "/api/ao-stats"
+  to = "/.netlify/functions/ao-stats"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin-verify"
+  to = "/.netlify/functions/admin-verify"
+  status = 200
+
+[[redirects]]
+  from = "/api/pax-overrides"
+  to = "/.netlify/functions/pax-overrides"
+  status = 200
+
+[[redirects]]
+  from = "/api/sync"
+  to = "/.netlify/functions/sync"
+  status = 200
+
+# ── Catch-all: schedule proxy (existing) ─────────────────────
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200

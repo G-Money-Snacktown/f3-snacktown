@@ -1,0 +1,9 @@
+{
+  "name": "f3-snacktown",
+  "version": "1.0.0",
+  "private": true,
+  "description": "F3 Snacktown region site — single-file front end + Netlify functions",
+  "dependencies": {
+    "bcryptjs": "^2.4.3"
+  }
+}

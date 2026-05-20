@@ -1,7 +1,0 @@
-{
-  "name": "f3-region-functions",
-  "private": true,
-  "dependencies": {
-    "bcryptjs": "^2.4.3"
-  }
-}

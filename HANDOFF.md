@@ -7,6 +7,10 @@
 This is the running checklist for handing the Snacktown site over to the region
 and finishing the analytics build. Use it to drive the handoff conversation.
 
+> 📋 **For the complete list of every variable, secret, and account the site
+> depends on, see [`VARIABLES.md`](VARIABLES.md).** Walk through it together so
+> the region knows and controls all of them.
+
 ---
 
 ## ✅ Done
@@ -29,7 +33,7 @@ and finishing the analytics build. Use it to drive the handoff conversation.
 |---|------|-----|-------|
 | 1 | **Transfer the GitHub repo** to the region's GitHub account | Marc → Han | GitHub → repo Settings → Danger Zone → *Transfer ownership*. Need Han's GitHub username. Do this **after** today; then re-link Netlify from Han's account so the connection is his. |
 | 2 | **Join-form email notification** | Marc | Netlify → site → **Forms** → `join` → add a notification to **F3.Snacktown.PA@gmail.com**. Without it, "Join Us" submissions go nowhere. |
-| 3 | **Admin password** (optional) | Han decides | Set `F3_ADMIN_PASSWORD` in Netlify if they want the `#admin` PAX-edit panel. |
+| 3 | **Admin password** (optional) | Han decides | If they want the `#admin` PAX-edit panel, set **`ADMIN_PASSCODE_HASH`** (a **bcrypt hash**, not plaintext — see VARIABLES.md §A). The old "F3_ADMIN_PASSWORD" instruction was wrong. |
 | 4 | **Confirm logo looks right on a phone** | Han | Open the live site on a phone after the current deploy finishes. |
 
 ### ⏰ Time-sensitive

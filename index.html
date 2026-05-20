@@ -7,6 +7,8 @@
 <meta name="description" id="page-desc" content="F3 Region — Free, outdoor, peer-led workouts for men. Fitness. Fellowship. Faith.">
 <meta name="theme-color" content="#c8102e">
 <meta name="robots" content="index,follow">
+<link rel="icon" type="image/png" href="images/snacktown-logo.png">
+<link rel="apple-touch-icon" href="images/snacktown-logo.png">
 <link rel="canonical" id="canonical-link" href="">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -85,12 +87,9 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; gap: 10px; line-height: 1;
 }
 .nav-logo-mark {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px;
-  background: var(--red); color: #fff;
-  font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0;
-  clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%);
-  flex-shrink: 0;
+  height: 38px; width: auto;
+  display: inline-block; flex-shrink: 0;
+  border-radius: 6px;
 }
 .nav-logo span { color: var(--red); margin-left: 2px; }
 .nav-tagline {
@@ -1202,7 +1201,7 @@ img { max-width: 100%; display: block; }
      NAVIGATION
      ═══════════════════════════════════════════════════════════════ -->
 <nav class="nav" id="main-nav">
-  <a href="#" class="nav-logo" onclick="showPage('home')"><span class="nav-logo-mark">F3</span><span data-cfg="region">REGION</span></a>
+  <a href="#" class="nav-logo" onclick="showPage('home')"><img class="nav-logo-mark" src="images/snacktown-logo.png" alt="F3 Snacktown logo"><span data-cfg="region">REGION</span></a>
   <span class="nav-tagline">Fitness. Fellowship. Faith.</span>
   <ul class="nav-primary" id="nav-links">
     <li><a href="#" class="active" data-page="home" onclick="showPage('home')">Home</a></li>
@@ -1847,7 +1846,7 @@ img { max-width: 100%; display: block; }
     setMeta('og-title', 'content', titleText);
     setMeta('og-desc',  'content', descText);
     setMeta('og-url',   'content', url);
-    setMeta('og-image', 'content', url + 'og-image.png');
+    setMeta('og-image', 'content', url + 'images/snacktown-logo.png');
     setMeta('tw-title', 'content', titleText);
     setMeta('tw-desc',  'content', descText);
     // Structured data

@@ -27,6 +27,10 @@ the repo.
 > `F3_ADMIN_PASSWORD` (an earlier setup note said that; it's wrong). To enable
 > admin login, generate a bcrypt hash of the chosen passcode and store the hash
 > in `ADMIN_PASSCODE_HASH`. If admin isn't needed, leave it unset.
+>
+> **Generate the hash:** `node scripts/gen-admin-hash.js "your-passcode"` →
+> prints the `ADMIN_PASSCODE_HASH=...` value to paste into Netlify. The
+> plaintext passcode is what you type on the site; only the hash is stored.
 
 ---
 

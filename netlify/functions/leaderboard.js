@@ -1,5 +1,5 @@
 /**
- * GET /api/leaderboard — PAX leaderboard with monthly activity
+ * GET /api/leaderboard — PAXs leaderboard with monthly activity
  *
  * Returns { pax: [...], month_label: "April 2026" }
  * Mirrors f3waxhaw f3-pax-endpoints.php lines 125-159

@@ -1194,6 +1194,10 @@ img { max-width: 100%; display: block; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 }
+   /* AM / PM time colors */
+:root { --time-am: #4d4dff; --time-pm: #facb0e; }
+.ao-time.am, .event-card-time.am, .today-ao-time.am { color: var(--time-am); }
+.ao-time.pm, .event-card-time.pm, .today-ao-time.pm { color: var(--time-pm); }
 </style>
 </head>
 <body>
@@ -2094,6 +2098,11 @@ img { max-width: 100%; display: block; }
     return h + ':' + m + ' ' + ap;
   }
 
+function timeClass(raw) {
+  var h = parseInt((raw || '0530').slice(0, 2), 10);
+  return h >= 12 ? 'pm' : 'am';
+}
+   
   function getTypeBadge(types) {
     if (!types || !types.length) return '<span class="ao-badge badge-bc">Bootcamp</span>';
     return types.map(function(t) {
@@ -2140,7 +2149,7 @@ img { max-width: 100%; display: block; }
         var tn = types.length ? types[0].name.toLowerCase() : 'bc';
         var tc = tn.includes('run') ? 'type-run' : tn.includes('ruck') ? 'type-ruck' : 'type-bc';
         return '<div class="today-ao">' +
-          '<div><div class="today-ao-time">' + formatTime(raw) + '</div></div>' +
+         '<div><div class="today-ao-time ' + timeClass(raw) + '">' + formatTime(raw) + '</div></div>' +
           '<div><div class="today-ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
           '<span class="today-ao-type ' + tc + '">' + (types.length ? types[0].name : 'Bootcamp') + '</span></div>' +
           '</div>';
@@ -2215,7 +2224,7 @@ img { max-width: 100%; display: block; }
             '<div class="ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
             '<div class="ao-day">' + DAYS[d.getDay()] + '</div>' +
           '</div>' +
-          '<div class="ao-time">' + formatTime(e.startTime) + '</div>' +
+          '<div class="ao-time ' + timeClass(e.startTime) + '">' + formatTime(e.startTime) + '</div>' +
         '</div>' +
         '<div class="ao-body">' +
           (loc ? '<div class="ao-loc">&#x1f4cd; ' + escHtml(loc) + '</div>' : '') +
@@ -2260,7 +2269,7 @@ img { max-width: 100%; display: block; }
           var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
           var loc = e.locationDescription || (fb && fb.city) || '';
           return '<div class="event-card">' +
-            '<div class="event-card-time">' + formatTime(e.startTime) + '</div>' +
+           '<div class="event-card-time ' + timeClass(e.startTime) + '">' + formatTime(e.startTime) + '</div>' +
             '<div class="event-card-name">' + (e.orgName || e.name || 'AO') + '</div>' +
             '<div class="event-card-loc">' + escHtml(loc) + '</div>' +
             '<div style="margin-top:8px">' + getTypeBadge(e.eventTypes) + '</div>' +

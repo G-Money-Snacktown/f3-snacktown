@@ -519,14 +519,17 @@ img { max-width: 100%; display: block; }
 .ao-meta a { color: var(--red); margin-left: 6px; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
 .ao-meta a:hover { text-decoration: underline; }
 .ao-badge {
-  display: inline-block; font-size: 9px; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 2px; margin-right: 4px;
+  display: inline-block; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  padding: 4px 10px; border: 1px solid; border-radius: 2px; margin-right: 4px;
 }
-.badge-bc   { background: rgba(255,255,255,.06); color: #aaa; }
-.badge-run  { background: rgba(39,174,96,.15); color: #27ae60; }
-.badge-ruck { background: rgba(200,148,10,.15); color: var(--gold); }
-.badge-bike { background: rgba(41,128,185,.15); color: #4a9fd4; }
+.badge-bc      { color: #ff4d5e; background: rgba(200,16,46,.16);  border-color: rgba(255,77,94,.45); }
+.badge-run     { color: #3ddc84; background: rgba(39,174,96,.16);  border-color: rgba(61,220,132,.45); }
+.badge-ruck    { color: #f0902a; background: rgba(240,144,42,.16); border-color: rgba(240,144,42,.45); }
+.badge-bike    { color: #4fb0ee; background: rgba(41,128,185,.18); border-color: rgba(79,176,238,.45); }
+.badge-3030    { color: #b98cff; background: rgba(140,92,230,.18); border-color: rgba(185,140,255,.45); }
+.badge-default { color: #aaa;    background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.22); }
+.today-ao .ao-badge { font-size: 11px; padding: 3px 8px; margin-top: 2px; }
 .schedule-loading {
   padding: 48px; text-align: center; color: var(--muted);
   font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
@@ -2103,16 +2106,22 @@ function timeClass(raw) {
   return h >= 12 ? 'pm' : 'am';
 }
    
-  function getTypeBadge(types) {
-    if (!types || !types.length) return '<span class="ao-badge badge-bc">Bootcamp</span>';
-    return types.map(function(t) {
-      var n = t.name.toLowerCase();
-      var cls = n.includes('run') ? 'badge-run' :
-                n.includes('ruck') ? 'badge-ruck' :
-                (n.includes('bike') || n.includes('cycl')) ? 'badge-bike' : 'badge-bc';
-      return '<span class="ao-badge ' + cls + '">' + t.name + '</span>';
-    }).join(' ');
-  }
+function badgeClass(label) {
+  var n = String(label || '').toLowerCase();
+  if (n.indexOf('30/30') >= 0) return 'badge-3030';
+  if (n.indexOf('run') >= 0) return 'badge-run';
+  if (n.indexOf('ruck') >= 0) return 'badge-ruck';
+  if (n.indexOf('bike') >= 0 || n.indexOf('cycl') >= 0) return 'badge-bike';
+  if (n.indexOf('bootcamp') >= 0) return 'badge-bc';
+  return 'badge-default';
+}
+
+function getTypeBadge(types) {
+  var labels = (types && types.length) ? types.map(function(t) { return t.name; }) : ['Bootcamp'];
+  return labels.map(function(label) {
+    return '<span class="ao-badge ' + badgeClass(label) + '">' + escHtml(label) + '</span>';
+  }).join(' ');
+}
 
   function dedupeByOrg(events) {
     var seen = {}, unique = [];
@@ -2151,7 +2160,7 @@ function timeClass(raw) {
         return '<div class="today-ao">' +
          '<div><div class="today-ao-time ' + timeClass(raw) + '">' + formatTime(raw) + '</div></div>' +
           '<div><div class="today-ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
-          '<span class="today-ao-type ' + tc + '">' + (types.length ? types[0].name : 'Bootcamp') + '</span></div>' +
+         getTypeBadge(types) + '</div>' +
           '</div>';
       }).join('');
 

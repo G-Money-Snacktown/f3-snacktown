@@ -1793,13 +1793,12 @@ img { max-width: 100%; display: block; }
     // Static AO list — shown when the F3 Nation API returns no events (also used to populate
     // the "Today" strip and Schedule grid as a fallback). Keep this in sync with the live region.
     aoFallback: [
-      { name: 'Jumpstart',         day: 1, time: '0500', type: 'Bootcamp / Ruck', city: 'Hanover, PA',     address: '152 Moul Ave, Hanover, PA' },
-      { name: 'Nomad',             day: 2, time: '1715', type: 'Run',             city: 'Glenville, PA',   address: 'Glenville, PA' },
-      { name: 'The Square',        day: 3, time: '0530', type: 'Ruck',            city: 'Hanover, PA',     address: '55 Frederick St, Hanover, PA' },
-      { name: 'Gettysburg',        day: 4, time: '0530', type: 'Bootcamp',        city: 'Gettysburg, PA',  address: '545 Long Lane, Gettysburg, PA' },
-      { name: 'The Corral',        day: 4, time: '1700', type: 'Run',             city: 'Hanover, PA',     address: '4 Southwestern Rd, Hanover, PA' },
-      { name: 'The Logpile',       day: 5, time: '0530', type: 'Bootcamp 30/30',  city: 'Spring Grove, PA',address: 'Roths Church Rd, Spring Grove, PA' },
-      { name: 'Kids Kingdom Park', day: 6, time: '0700', type: 'Bootcamp',        city: 'Hanover, PA',     address: '4615 Grandview Rd, Hanover, PA' },
+      { orgId: 50576, name: 'Jumpstart',           day: 1, time: '0500', type: 'Bootcamp', city: 'Hanover, PA',      address: '152 Moul Ave, Hanover, PA' },
+      { orgId: 46881, name: 'Nomad Run',           day: 2, time: '1715', type: 'Run',      city: 'Glenville, PA',    address: 'Glenville, PA' },
+      { orgId: 39992, name: 'The Square',          day: 3, time: '0530', type: 'Ruck',     city: 'Hanover, PA',      address: '55 Frederick St, Hanover, PA' },
+      { orgId: 42004, name: 'The Corral',          day: 4, time: '1700', type: 'Run',      city: 'Hanover, PA',      address: '4 Southwestern Rd, Hanover, PA' },
+      { orgId: 46801, name: 'The Logpile - 30/30', day: 5, time: '0530', type: 'Bootcamp', city: 'Spring Grove, PA', address: 'Roths Church Rd, Spring Grove, PA' },
+      { orgId: 32675, name: 'Kids Kingdom (K2AO)', day: 6, time: '0700', type: 'Bootcamp', city: 'Hanover, PA',      address: '4615 Grandview Rd, Hanover, PA' },
     ],
 
     // Social media URLs (leave blank to hide)
@@ -2061,14 +2060,10 @@ img { max-width: 100%; display: block; }
   // Match a live API event back to a CONFIG.aoFallback entry by name — used to
   // backfill location/address since the F3 Nation /calendar-home-schedule endpoint
   // does not include them.
-  function aoFallbackMatch(orgName) {
-    if (!orgName || !CONFIG.aoFallback) return null;
-    var needle = String(orgName).toLowerCase().replace(/[^a-z0-9]/g, '');
+  function aoFallbackMatch(orgId) {
+    if (!orgId || !CONFIG.aoFallback) return null;
     for (var i = 0; i < CONFIG.aoFallback.length; i++) {
-      var hay = CONFIG.aoFallback[i].name.toLowerCase().replace(/[^a-z0-9]/g, '');
-      if (hay === needle || needle.indexOf(hay) >= 0 || hay.indexOf(needle) >= 0) {
-        return CONFIG.aoFallback[i];
-      }
+      if (CONFIG.aoFallback[i].orgId === orgId) return CONFIG.aoFallback[i];
     }
     return null;
   }
@@ -2082,6 +2077,7 @@ img { max-width: 100%; display: block; }
       var d = new Date(today); d.setDate(today.getDate() + delta);
       var iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
       return {
+        orgId: ao.orgId,
         orgName: ao.name,
         startTime: ao.time,
         startDate: iso,
@@ -2159,7 +2155,7 @@ function getTypeBadge(types) {
         var tc = tn.includes('run') ? 'type-run' : tn.includes('ruck') ? 'type-ruck' : 'type-bc';
         return '<div class="today-ao">' +
          '<div><div class="today-ao-time ' + timeClass(raw) + '">' + formatTime(raw) + '</div></div>' +
-          '<div><div class="today-ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
+          '<div><div class="today-ao-name">' + (e.orgName || 'AO') + '</div>' +
          getTypeBadge(types) + '</div>' +
           '</div>';
       }).join('');
@@ -2221,7 +2217,7 @@ function getTypeBadge(types) {
 
     grid.innerHTML = filtered.map(function(e) {
       var d = new Date((e.startDate || new Date().toISOString().split('T')[0]) + 'T12:00:00');
-      var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
+      var fb = aoFallbackMatch(e.orgId);
       var loc = e.locationDescription || (fb && fb.city) || '';
       var addr = e.locationAddress || e.address || (fb && fb.address) || '';
       var mapUrl = loc || addr ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr || loc) : '';
@@ -2230,7 +2226,7 @@ function getTypeBadge(types) {
       return '<div class="ao-card">' +
         '<div class="ao-header">' +
           '<div>' +
-            '<div class="ao-name">' + (e.orgName || e.name || 'AO') + '</div>' +
+           '<div class="ao-name">' + (e.orgName || 'AO') + '</div>' +
             '<div class="ao-day">' + DAYS[d.getDay()] + '</div>' +
           '</div>' +
           '<div class="ao-time ' + timeClass(e.startTime) + '">' + formatTime(e.startTime) + '</div>' +
@@ -2275,11 +2271,11 @@ function getTypeBadge(types) {
         todayGrid.innerHTML = '<div style="color:var(--muted); font-size:14px; padding:12px;">No workouts scheduled today.</div>';
       } else {
         todayGrid.innerHTML = todayEvents.map(function(e) {
-          var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
+          var fb = aoFallbackMatch(e.orgId);
           var loc = e.locationDescription || (fb && fb.city) || '';
           return '<div class="event-card">' +
            '<div class="event-card-time ' + timeClass(e.startTime) + '">' + formatTime(e.startTime) + '</div>' +
-            '<div class="event-card-name">' + (e.orgName || e.name || 'AO') + '</div>' +
+            '<div class="event-card-name">' + (e.orgName || 'AO') + '</div>' +
             '<div class="event-card-loc">' + escHtml(loc) + '</div>' +
             '<div style="margin-top:8px">' + getTypeBadge(e.eventTypes) + '</div>' +
             '</div>';
@@ -2306,7 +2302,7 @@ function getTypeBadge(types) {
       } else {
         upcomingList.innerHTML = upcoming.slice(0, 15).map(function(e) {
           var dd = e._displayDate;
-          var fb = aoFallbackMatch(e.orgName || e.seriesName || e.name);
+          var fb = aoFallbackMatch(e.orgId);
           var loc = e.locationDescription || (fb && fb.city) || '';
           return '<div class="upcoming-row">' +
             '<div class="upcoming-date-block">' +
@@ -2314,7 +2310,7 @@ function getTypeBadge(types) {
               '<div class="month">' + MONTHS[dd.getMonth()] + '</div>' +
             '</div>' +
             '<div class="upcoming-info">' +
-              '<div class="name">' + (e.orgName || e.name || 'AO') + '</div>' +
+              '<div class="name">' + (e.orgName || 'AO') + '</div>' +
               '<div class="details">' + escHtml(loc) + '</div>' +
             '</div>' +
             '<div class="upcoming-time">' + formatTime(e.startTime) + '</div>' +

@@ -951,6 +951,13 @@ img { max-width: 100%; display: block; }
   font-family: "Bebas Neue", sans-serif; font-size: 18px; color: var(--white);
 }
 .lb-bar-cell { width: 45%; padding-left: 4px; padding-right: 4px; }
+.lb-bar-track { height: 6px; background: #262626; border-radius: 3px; overflow: hidden; }
+.lb-bar-fill { height: 100%; background: var(--red); border-radius: 3px; min-width: 2px; }
+.lb-table td.lb-count, .lb-table th.lb-count-th { text-align: right; width: 56px; }
+@media (max-width: 600px) {
+  .lb-bar-cell { width: 28%; }
+}
+.lb-bar-cell { width: 45%; padding-left: 4px; padding-right: 4px; }
 .lb-bar-track {
   height: 6px; background: #262626; border-radius: 3px; overflow: hidden;
 }
@@ -2533,6 +2540,7 @@ function getTypeBadge(types) {
       html += '<tr>' +
         '<td class="lb-rank' + rankClass + '">' + rank + '</td>' +
         '<td>' + avatarHtml + '<span class="lb-handle">' + escHtml(p.handle) + '</span></td>' +
+        '<td class="lb-bar-cell"><div class="lb-bar-track"><div class="lb-bar-fill" style="width:' + (maxVal ? Math.round((p[countKey] || 0) / maxVal * 100) : 0) + '%"></div></div></td>' +
         '<td class="lb-bar-cell"><div class="lb-bar-track"><div class="lb-bar-fill" style="width:' + (maxVal ? Math.round((p[countKey] || 0) / maxVal * 100) : 0) + '%"></div></div></td>' +
         '<td class="lb-count">' + (p[countKey] || 0) + '</td>' +
       '</tr>';

@@ -958,6 +958,35 @@ img { max-width: 100%; display: block; }
   .lb-bar-cell { width: 28%; }
 }
    
+/* Leaderboard controls (BigQuery feed: Posts / Qs / DRPs) */
+#lb-list-tabs .lb-tab { font-size: 17px; padding: 10px 22px; }
+.lb-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.lb-seg { display: inline-flex; border: 1px solid var(--border); }
+.lb-seg button {
+  background: var(--dark3); border: none; color: var(--muted); cursor: pointer;
+  font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; padding: 8px 14px; transition: all .15s;
+}
+.lb-seg button + button { border-left: 1px solid var(--border); }
+.lb-seg button:hover { color: var(--white); }
+.lb-seg button.active { color: var(--white); background: rgba(200,16,46,.18); }
+.lb-select {
+  background: var(--dark3); border: 1px solid var(--border); color: var(--white);
+  font-family: "Barlow Condensed", sans-serif; font-size: 14px; letter-spacing: .04em;
+  padding: 8px 10px; min-width: 150px; max-width: 100%;
+}
+.lb-select:focus, .lb-seg button:focus-visible, #lb-list-tabs .lb-tab:focus-visible { outline: 1px solid var(--red); }
+.lb-explain { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; min-height: 1.5em; }
+.lb-region { font-family: "Barlow Condensed", sans-serif; font-size: 12px; font-weight: 400; color: var(--muted); }
+.lb-more { text-align: center; margin-top: 16px; }
+.lb-more-note { font-family: "Barlow Condensed", sans-serif; font-size: 12px; color: var(--muted); }
+.lb-footnote { margin-top: 16px; text-align: right; font-family: "Barlow Condensed", sans-serif; font-size: 12px; color: var(--muted); }
+@media (max-width: 600px) {
+  #lb-list-tabs .lb-tab { flex: 1; padding: 10px 6px; }
+  .lb-controls { gap: 8px; }
+  .lb-select { flex: 1 1 140px; }
+}
+
 /* Region stats */
 .stats-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -1674,16 +1703,26 @@ img { max-width: 100%; display: block; }
       </div>
     </div>
 
-    <!-- Leaderboard Panel -->
+    <!-- Leaderboard Panel (BigQuery feed: Posts / Qs / DRPs) -->
     <div id="pax-leaderboard" class="pax-panel">
-      <div class="lb-tabs">
-        <button class="lb-tab active" onclick="switchLbTab('alltime',this)">All Time</button>
-        <button class="lb-tab" onclick="switchLbTab('monthly',this)">Monthly</button>
-        <button class="lb-tab" onclick="switchLbTab('qs',this)">Q Leaders</button>
+      <div class="lb-tabs" id="lb-list-tabs">
+        <button type="button" class="lb-tab active" data-list="posts">Posts</button>
+        <button type="button" class="lb-tab" data-list="qs">Qs</button>
+        <button type="button" class="lb-tab" data-list="drps">DRPs</button>
       </div>
+      <div class="lb-controls">
+        <div class="lb-seg" id="lb-group-seg" role="group" aria-label="Which men">
+          <button type="button" class="active" data-group="Snacktown men">Snacktown men</button>
+          <button type="button" data-group="Visitors">Visitors</button>
+        </div>
+        <select id="lb-year" class="lb-select" aria-label="Time period"><option value="">Lifetime</option></select>
+        <select id="lb-ao" class="lb-select" aria-label="AO"><option value="">All AOs</option></select>
+      </div>
+      <div class="lb-explain" id="lb-explain"></div>
       <div id="lb-content">
         <div class="pax-loading">Loading leaderboard&hellip;</div>
       </div>
+      <div class="lb-footnote" id="lb-updated"></div>
     </div>
 
     <!-- Region Stats Panel -->
@@ -1834,6 +1873,8 @@ img { max-width: 100%; display: block; }
     // PAX data endpoints (powered by Supabase — leave blank to disable PAX features)
     paxApi: '/api/pax',
     leaderboardApi: '/api/leaderboard',
+    bqLeaderboardApi: '/.netlify/functions/bq-leaderboard',
+    bqLeaderboardOptionsApi: '/.netlify/functions/bq-leaderboard-options',
     regionStatsApi: '/api/region-stats',
     aoStatsApi: '/api/ao-stats',
     adminVerifyApi: '/api/admin-verify',
@@ -2472,73 +2513,172 @@ function getTypeBadge(types) {
     }).join('');
   }
 
-  // ── LEADERBOARD ─────────────────────────────────────────
+  // ── LEADERBOARD (BigQuery feed: Posts / Qs / DRPs) ─────────
+  // Reads /.netlify/functions/bq-leaderboard and bq-leaderboard-options.
+  // Rules (Marc, 2026-11-15): Co-Qs count as Qs. Visitors = Snacktown workouts only.
+  // The AO list = standard Snacktown AOs + one "DRP" group (hidden for Visitors).
+  var lbState = { list: 'posts', group: 'Snacktown men', year: '', ao: '', showAll: false, seq: 0 };
+  var lbAos = [];
+  var lbRows = [];
+  var lbBound = false;
+  var LB_FIRST = 25;
+  var LB_LABELS = { posts: 'Posts', qs: 'Qs', drps: 'DRPs' };
+  var LB_BUSY = 'Leaderboard is updating, try again soon.';
+
+  function lbEl(id) { return document.getElementById(id); }
+
+  function lbMessage(msg, isError) {
+    var c = lbEl('lb-content');
+    if (c) c.innerHTML = '<div class="pax-loading"' + (isError ? ' style="color:var(--red)"' : '') + '>' + escHtml(msg) + '</div>';
+  }
 
   function loadLeaderboard() {
-    if (!CONFIG.leaderboardApi) return;
-    var content = document.getElementById('lb-content');
-    if (content) content.innerHTML = '<div class="pax-loading">Loading leaderboard&hellip;</div>';
-
-    fetch(CONFIG.leaderboardApi).then(function(r) { return r.json(); })
-      .then(function(data) {
-        leaderboardData = data;
-        renderLeaderboard('alltime');
+    if (!CONFIG.bqLeaderboardApi || !CONFIG.bqLeaderboardOptionsApi) {
+      lbMessage(LB_BUSY, true);
+      return;
+    }
+    bindLbControls();
+    lbMessage('Loading leaderboard\u2026', false);
+    fetch(CONFIG.bqLeaderboardOptionsApi)
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(opts) {
+        var thisYear = new Date().getFullYear();
+        var yh = '<option value="">Lifetime</option>';
+        (opts.years || []).forEach(function(y) {
+          yh += '<option value="' + y + '">' + y + (y === thisYear ? ' (year to date)' : '') + '</option>';
+        });
+        lbEl('lb-year').innerHTML = yh;
+        lbAos = opts.aos || [];
+        var upd = lbEl('lb-updated');
+        if (upd) {
+          var d = opts.updated ? new Date(opts.updated) : null;
+          upd.textContent = (d && !isNaN(d)) ? 'Updated ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() : '';
+        }
+        leaderboardData = opts; // marks "loaded" for the existing tab logic
+        syncLbControls();
+        fetchLbBoard();
       })
       .catch(function(err) {
-        console.error('Leaderboard fetch failed:', err);
-        if (content) content.innerHTML = '<div class="pax-loading" style="color:var(--red)">Failed to load leaderboard.</div>';
+        console.error('Leaderboard options failed:', err);
+        lbMessage(LB_BUSY, true);
       });
   }
 
-  window.switchLbTab = function(tab, btn) {
-    document.querySelectorAll('.lb-tab').forEach(function(t) { t.classList.remove('active'); });
-    if (btn) btn.classList.add('active');
-    renderLeaderboard(tab);
-  };
+  function bindLbControls() {
+    if (lbBound) return;
+    lbBound = true;
+    lbEl('lb-list-tabs').addEventListener('click', function(e) {
+      var b = e.target.closest('[data-list]'); if (!b) return;
+      lbState.list = b.getAttribute('data-list');
+      if (lbState.list === 'drps') { lbState.group = 'Snacktown men'; lbState.ao = ''; }
+      lbState.showAll = false;
+      syncLbControls(); fetchLbBoard();
+    });
+    lbEl('lb-group-seg').addEventListener('click', function(e) {
+      var b = e.target.closest('[data-group]'); if (!b) return;
+      lbState.group = b.getAttribute('data-group');
+      if (lbState.group === 'Visitors' && lbState.ao === 'drp') lbState.ao = '';
+      lbState.showAll = false;
+      syncLbControls(); fetchLbBoard();
+    });
+    lbEl('lb-year').addEventListener('change', function() {
+      lbState.year = this.value; lbState.showAll = false; fetchLbBoard();
+    });
+    lbEl('lb-ao').addEventListener('change', function() {
+      lbState.ao = this.value; lbState.showAll = false; fetchLbBoard();
+    });
+    lbEl('lb-content').addEventListener('click', function(e) {
+      if (e.target.closest('#lb-show-all')) { lbState.showAll = true; renderLbRows(); }
+    });
+  }
 
-  function renderLeaderboard(tab) {
-    var content = document.getElementById('lb-content');
-    if (!content || !leaderboardData) return;
+  // Keep buttons, dropdowns and the one-line explanation in step with the choices
+  function syncLbControls() {
+    var drps = lbState.list === 'drps';
+    document.querySelectorAll('#lb-list-tabs [data-list]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-list') === lbState.list);
+    });
+    document.querySelectorAll('#lb-group-seg [data-group]').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-group') === lbState.group);
+    });
+    lbEl('lb-group-seg').style.display = drps ? 'none' : '';
+    lbEl('lb-ao').style.display = drps ? 'none' : '';
 
-    var pax = (leaderboardData.pax || []).slice();
-    var title = 'All Time Workout Leaders';
+    // AO dropdown: standard AOs, then the DRP group (not offered for Visitors)
+    var ah = '<option value="">All AOs</option>';
+    lbAos.forEach(function(a) { ah += '<option value="' + a.id + '">' + escHtml(a.name) + '</option>'; });
+    if (lbState.group === 'Snacktown men') ah += '<option value="drp">DRP</option>';
+    var sel = lbEl('lb-ao');
+    sel.innerHTML = ah;
+    sel.value = lbState.ao;
+    if (sel.value !== lbState.ao) { lbState.ao = ''; sel.value = ''; }
 
-    if (tab === 'monthly') {
-      title = leaderboardData.month_label + ' Leaders';
-      pax.sort(function(a, b) { return (b.workout_count_month || 0) - (a.workout_count_month || 0); });
-    } else if (tab === 'qs') {
-      title = 'Q Leaders (All Time)';
-      pax.sort(function(a, b) { return (b.q_count || 0) - (a.q_count || 0); });
-    } else {
-      pax.sort(function(a, b) { return (b.workout_count || 0) - (a.workout_count || 0); });
+    lbEl('lb-explain').textContent = lbExplain();
+  }
+
+  function lbExplain() {
+    var visitors = lbState.group === 'Visitors';
+    if (lbState.list === 'drps') return 'Down range posts: the old DRP AO, OYO and Virtual, and workouts in other regions.';
+    if (lbState.ao === 'drp') return 'Down range only: the old DRP AO, OYO and Virtual, and workouts in other regions.';
+    if (lbState.list === 'qs') {
+      return visitors
+        ? 'Men from other regions, counting only the workouts they led (Q or Co-Q) at Snacktown.'
+        : 'Times a man led a workout as Q or Co-Q, including down range.';
     }
+    return visitors
+      ? 'Men from other regions, counting only their posts at Snacktown workouts.'
+      : 'Every post by men whose home is Snacktown, including down range posts.';
+  }
 
-    var countKey = tab === 'monthly' ? 'workout_count_month' : tab === 'qs' ? 'q_count' : 'workout_count';
-    var countLabel = tab === 'qs' ? 'Qs' : 'Posts';
+  function fetchLbBoard() {
+    var seq = ++lbState.seq; // ignore answers that arrive after a newer choice
+    var p = ['list=' + encodeURIComponent(lbState.list), 'group=' + encodeURIComponent(lbState.group), 'limit=100'];
+    if (lbState.year) p.push('year=' + encodeURIComponent(lbState.year));
+    if (lbState.ao === 'drp') p.push('drp=1');
+    else if (lbState.ao) p.push('ao=' + encodeURIComponent(lbState.ao));
+    lbEl('lb-explain').textContent = lbExplain();
+    lbMessage('Loading\u2026', false);
+    fetch(CONFIG.bqLeaderboardApi + '?' + p.join('&'))
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(data) {
+        if (seq !== lbState.seq) return;
+        lbRows = Array.isArray(data.rows) ? data.rows : [];
+        renderLbRows();
+      })
+      .catch(function(err) {
+        if (seq !== lbState.seq) return;
+        console.error('Leaderboard failed:', err);
+        lbMessage(LB_BUSY, true);
+      });
+  }
 
-    var html = '<h3 style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;color:var(--white);margin-bottom:16px">' + title + '</h3>';
-     html += '<table class="lb-table"><thead><tr><th>#</th><th>PAX</th><th></th><th class="lb-count-th">' + countLabel + '</th></tr></thead><tbody>';
-
-    var top50 = pax.slice(0, 50);
-    var maxVal = top50.length ? (top50[0][countKey] || 0) : 0;
-
-    top50.forEach(function(p, i) {
-      var rank = i + 1;
-      var rankClass = rank <= 3 ? ' lb-rank-' + rank : '';
-      var avatar = p.override_photo_url || p.avatar_url;
-      var avatarHtml = avatar
-        ? '<img class="lb-avatar-sm" src="' + escHtml(avatar) + '" onerror="this.style.display=\'none\'">'
-        : '';
-
+  function renderLbRows() {
+    var content = lbEl('lb-content');
+    if (!content) return;
+    var label = LB_LABELS[lbState.list] || 'Posts';
+    if (!lbRows.length) {
+      content.innerHTML = '<div class="pax-empty">No ' + label.toLowerCase() + ' for this selection yet.</div>';
+      return;
+    }
+    var shown = lbState.showAll ? lbRows : lbRows.slice(0, LB_FIRST);
+    var maxVal = lbRows[0].total || 0;
+    var html = '<table class="lb-table"><thead><tr><th>#</th><th>PAX</th><th></th><th class="lb-count-th">' + label + '</th></tr></thead><tbody>';
+    shown.forEach(function(r) {
+      var rankClass = r.place <= 3 ? ' lb-rank-' + r.place : '';
+      var region = (lbState.group === 'Visitors' && r.region) ? '<div class="lb-region">' + escHtml(r.region) + '</div>' : '';
       html += '<tr>' +
-        '<td class="lb-rank' + rankClass + '">' + rank + '</td>' +
-        '<td>' + avatarHtml + '<span class="lb-handle">' + escHtml(p.handle) + '</span></td>' +
-        '<td class="lb-bar-cell"><div class="lb-bar-track"><div class="lb-bar-fill" style="width:' + (maxVal ? Math.round((p[countKey] || 0) / maxVal * 100) : 0) + '%"></div></div></td>' +
-        '<td class="lb-count">' + (p[countKey] || 0) + '</td>' +
+        '<td class="lb-rank' + rankClass + '">' + r.place + '</td>' +
+        '<td><span class="lb-handle">' + escHtml(r.name) + '</span>' + region + '</td>' +
+        '<td class="lb-bar-cell"><div class="lb-bar-track"><div class="lb-bar-fill" style="width:' + (maxVal ? Math.round(r.total / maxVal * 100) : 0) + '%"></div></div></td>' +
+        '<td class="lb-count">' + r.total + '</td>' +
       '</tr>';
     });
-
     html += '</tbody></table>';
+    if (!lbState.showAll && lbRows.length > LB_FIRST) {
+      html += '<div class="lb-more"><button type="button" class="pax-filter-btn" id="lb-show-all">Show all ' + lbRows.length + '</button></div>';
+    } else if (lbRows.length >= 100) {
+      html += '<div class="lb-more lb-more-note">Showing the top 100.</div>';
+    }
     content.innerHTML = html;
   }
 

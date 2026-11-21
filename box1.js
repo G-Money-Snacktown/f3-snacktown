@@ -5,7 +5,7 @@
    Uses the site's own colors and fonts (CSS variables from index.html).
    ============================================================ */
 (function () {
-  'use strict';
+  'use strict'; 
 
   var API = '/.netlify/functions/bq-region-box1';
   var BUSY = 'Region stats are updating, try again soon.';

@@ -9,6 +9,7 @@
 
   var API = '/.netlify/functions/bq-region-box1';
   var BUSY = 'Region stats are updating, try again soon.';
+    var NOTE = 'Every post by men within Snacktown region, including down range visitors, excluding down range posts.';
   var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   var ROWS = [
@@ -70,6 +71,7 @@
           html += '<div class="box1-updated">Updated ' + MONTHS[dt.getMonth()] + ' ' + dt.getDate() + ', ' + dt.getFullYear() + '</div>';
         }
         html += '</div>';
+                html += '<div style="max-width:420px;margin:-18px 0 28px;font-family:\'Barlow Condensed\',sans-serif;font-size:12px;line-height:1.5;color:var(--muted)">' + esc(NOTE) + '</div>';
         slot.innerHTML = html;
       })
       .catch(function (err) {

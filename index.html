@@ -2704,12 +2704,8 @@ function getTypeBadge(types) {
     var content = document.getElementById('stats-content');
     if (!content) return;
 
-    var html = '<div class="stats-grid">';
-    html += statCard(data.active_pax_count || 0, 'Active PAX');
-    html += statCard(data.total_pax_count || 0, 'Total PAX');
-    html += statCard(data.events_ytd || 0, 'Workouts YTD');
-    html += statCard(data.avg_pax_30d || 0, 'Avg PAX (30d)');
-    html += '</div>';
+    var html = '<div id="box1-slot"></div>';
+    setTimeout(function () { if (window.F3Box1) window.F3Box1.render(document.getElementById('box1-slot')); }, 0);
 
     // Attendance by day chart
     var byDay = data.attendance_by_day;
@@ -2928,5 +2924,6 @@ function getTypeBadge(types) {
   </div>
 </div>
 
+   <script src="box1.js"></script>
 </body>
 </html>
